@@ -1,0 +1,89 @@
+\pretolerance=20000
+\tolerance=30000
+\setlength{\headheight}{14.61858pt}
+\selectlanguage{spanish}
+\pagestyle{fancy}
+
+\chapter[Introducci\'on]
+{Introducci\'on}
+\label{Chapter01}
+
+\vspace*{1cm}
+
+Riemann, Erdos, Selberg, Newman, Tao y otros matem\'aticos han demostrado el
+teorema del n\'umero primo de distintas maneras as\'i como Chebyshev y Euler
+lograron resultados parciales.
+Todos aportaron teoremas y t\'ecnicas que han
+logrado el desarrollo de nuevas teor\'ias, as\'i como la soluci\'on
+de conjeturas y propuestas de hip\'otesis a\'un sin una demostraci\'on.
+Adem\'as, desde hace miles de a\~nos Euclides y Erat\'ostenes
+como tambi\'en en los \'ultimos cincuenta a\~nos Miller, Rabin, Pollard, Gries
+y otros cient\'ificos han podido desarrollar algoritmos eficientes que permiten
+implementar y conseguir resultados combinando la Teor\'ia de N\'umeros y
+las Ciencias de la Computaci\'on, lo cual tiene un alto impacto en
+el mundo contempor\'aneo tanto en la teor\'ia como en la pr\'actica,
+lo cual se ve reflejado en ramas como la Criptograf\'ia y
+la Matem\'atica Computacional.
+ 
+\section{Nuestros resultados}
+El prop\'osito de este trabajo es doble: 
+en primer lugar probaremos la f\'ormula de Selberg en todo rigor
+(ver enunciado a continuaci\'on); 
+luego diseñar\'emos y analizaremos la eficiencia de estos algoritmos e
+implementaremos un programa para su verificaci\'on n\'umerica.
+
+\bigskip
+
+Empezamos enunciado la f\'ormula asint\'otica de Selberg. 
+En todo lo que sigue los s\'imbolos \(p, q\) se referir\'an a
+n\'umeros primos positivos.
+
+\bigskip
+
+\noindent
+\textbf{Teorema (La identidad de Selberg)}
+\textit{Para todo n\'umero real \(x\) mayor o igual a \(1\)
+se cumple la f\'ormula de Selberg}
+\[
+  \sum_{p \leq x} \ln^2(p) + \sum_{pq \leq x} \ln(p) \ln(q) = 2x\ln(x) + O(x).
+\]
+
+\section{Nuestras t\'ecnicas}
+Para obtener nuestros resultados,
+hemos utilizado herramientas b\'asicas del an\'alisis real,
+ejemplos de los cuales tenemos series, sucesiones, continuidad,
+l\'imites, derivadas e integrales.
+Asimismo, haremos uso de funciones aritm\'eticas
+y estimados de estas,
+las cuales ser\'an controladas en uso de la notaci\'on \textit{big \(O\)}.
+Para el an\'alisis de complejidad asint\'otico de los algoritmos,
+haremos uso de la notaci\'on \textit{big \(O\)}, recursividad e invariantes.
+El algoritmo principal depender\'a de otros algoritmos que realizar\'an
+b\'usquedas binarias y una criba lineal para deteminar
+los n\'umeros primos en un rango de modo eficiente.
+Finalmente, los estimados computacionales ser\'an obtenidos tras realizar una
+implementaci\'on de los algoritmos propuestos en el lenguaje GNU C++ 17.
+
+\section{Notaci\'on}
+Emplearemos \(f(x) = O(g(x))\) en vez de \(f \in O(g)\)
+a pesar de que no se trate de una igualdad de conjuntos sino
+pertenencia de una funci\'on a una clase de funciones; 
+de la misma manera
+trataremos la aritm\'etica entre familias de funciones
+con notaci\'on \textit{big \(O\)}.
+Los s\'imbolos \(p\) y \(q\), en caso de no especificarse,
+har\'an referencia a n\'umeros primos positivos.
+
+\section{Organizaci\'on}
+En la secci\'on 2 presentaremos los teoremas y definiciones que no probaremos
+pero  son lugar com\'un en \'area,
+utilizaremos como referencia \cite{Apostol} y \cite{CLRS}.
+En la secci\'on 3 realizaremos la demostraci\'on de la identidad de Selberg
+tras la prueba de ciertos lemas intermedios.
+En la secci\'on 4 propondremos los algoritmos CribaLineal,
+Buscar\'UltimaPosici\'on y CalcularSuma para poder cumplir con
+el objetivo de realizar estimados con el algoritmo EstimarConstante,
+el mismo que emplea los tres algoritmos anteriores. 
+Todos los algoritmos tendr\'an su respectivo an\'alisis de complejidad asint\'otico.
+En la secci\'on 5 implementaremos los algoritmos de la secci\'on anterior
+en el lenguaje de programaci\'on C++ y presentaremos tablas con los estimados.
