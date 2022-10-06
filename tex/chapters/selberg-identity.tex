@@ -91,33 +91,38 @@ alcanzando nuestro objetivo.
   lo anunciado.
 \end{proof}
 
-\begin{lemma}\label{lem10}
-Para toda funci\'on aritm\'etica $f$ se cumple
-\[
-  \sum_{n \leq x} \sum_{d \mid n} f(d) = \sum_{n \leq x} f(n) \floor{\frac{x}{n}}.
-\]
+\begin{lemma}\label{lem:03}
+  Para toda funci\'on aritm\'etica \(f\) se cumple
+  \[
+    \sum_{n \leq x} \sum_{d \mid n} f(d) =
+    \sum_{n \leq x} f(n) \floor{\frac{x}{n}}.
+  \]
 \end{lemma}
 
 \begin{proof}
-Sea $f$ y $g$ dos funciones aritm\'eticas, $F$ y $G$ sus respectivas cumulativas;
-es decir, $F(x) = \sum_{n \leq x} f(x)$ y $G(x) = \sum_{n \leq x} g(x)$. 
-La cumulativa del producto de Dirichlet de $f$ y $g$ est\'a dada por 
-\begin{align}
-\sum_{n \leq x} f * g (n) &= \sum_{n \leq x} \sum_{cd = n} f(c)g(d)\\
-&= \sum_{c \leq x} \sum_{d \leq \frac{x}{c}} f(c) g(d)\\
-&= \sum_{c \leq x} f(c) \sum_{d \leq \frac{x}{c}} g(d)\\
-&= \sum_{c \leq x} f(c) G\left(\frac{x}{c}\right).\label{eq02}
-\end{align}
+  Sean \(f\) y \(g\) dos funciones aritm\'eticas,
+  \(F\) y \(G\) sus respectivas cumulativas;
+  es decir, \(F(x) = \sum_{n \leq x} f(x)\) y
+  \(G(x) = \sum_{n \leq x} g(x)\).
+  La cumulativa del producto de Dirichlet de \(f\) y \(g\) est\'a dada por 
+  \begin{align*}
+    \sum_{n \leq x} f * g (n) &= \sum_{n \leq x} \sum_{cd = n} f(c)g(d) \\
+    &= \sum_{c \leq x} \sum_{d \leq \frac{x}{c}} f(c) g(d) \\
+    &= \sum_{c \leq x} f(c) \sum_{d \leq \frac{x}{c}} g(d) \\
+    &= \sum_{c \leq x} f(c) G\parentheses{\frac{x}{c}}.\eqlabel{eq:02}
+  \end{align*}
 
-En particular, cuando $g = \mathbf{1}$, su cumulativa es
-\begin{align}
-\sum_{n \leq x} \mathbf{1}(n) = \sum_{n \leq x} 1 = \floor{x}.
-\end{align}
-De este modo, al introducir $G(x)=\floor{x}$ en la Ecuaci\'on \ref{eq02} se logra 
-\begin{align}
-\sum_{n \leq x} \sum_{d \mid n} f(d) = \sum_{n \leq x} f * \mathbf{1} (n) = \sum_{n \leq x} f(n) \floor*{\frac{x}{n}}, 
-\end{align}
-lo buscado. 
+  En particular, cuando \(g = \mathbf{1}\), su cumulativa es
+  \[
+    \sum_{n \leq x} \mathbf{1}(n) = \sum_{n \leq x} 1 = \floor{x}.
+  \]
+  De este modo, al introducir \(G(x) = \floor{x}\) en \eqref{eq:02} se logra
+  \[
+    \sum_{n \leq x} \sum_{d \mid n} f(d)
+    = \sum_{n \leq x} f * \mathbf{1} (n)
+    = \sum_{n \leq x} f(n) \floor{\frac{x}{n}},
+  \]
+  lo buscado.
 \end{proof}
 
 \begin{lemma}\label{lem11}
