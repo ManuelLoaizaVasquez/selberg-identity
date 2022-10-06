@@ -125,22 +125,21 @@ alcanzando nuestro objetivo.
   lo buscado.
 \end{proof}
 
-\begin{lemma}\label{lem11}
-Para todo n\'umero real $x$ tenemos
-\[
-\floor{x} = x + O(1).
-\]
+\begin{lemma}\label{lem:04}
+  Para todo n\'umero real \(x\) tenemos
+  \[
+    \floor{x} = x + O(1).
+  \]
 \end{lemma}
 
 \begin{proof}
-Sea $x = n + r$ un n\'umero real no negativo, con $n \in \BZ$ y $0 \leq r < 1$. 
-De esta manera, por definici\'on de m\'aximo entero tenemos
-\begin{align}
-\floor{x} &= n \\
-&= x - r \\
-&= x + O(1).
-\end{align}
-Concluimos trivialmente la propiedad $\floor{x} = x + O(1)$.
+  Sea \(x = n + r\) un n\'umero real no negativo, con
+  \(n\) entero y \(0 \leq r < 1\).
+  De esta manera, por definici\'on de m\'aximo entero obtenemos
+  \[
+    \floor{x} = n = x - r = x + O(1)
+  \]
+  concluyendo trivialmente con la propiedad.
 \end{proof}
 
 \begin{lemma}\label{lem12}
