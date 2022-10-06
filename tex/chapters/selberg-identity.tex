@@ -142,7 +142,7 @@ alcanzando nuestro objetivo.
   concluyendo trivialmente con la propiedad.
 \end{proof}
 
-\begin{lemma}\label{lem:05}
+\begin{lemma}\label{lem12}
   Para todo \(x \geq 1\) tenemos
   \[
     \Psi(x) = O(x).
@@ -199,7 +199,7 @@ lleva a
 \end{align}
 Una aplicaci\'on directa del \cref{lem10} deriva en 
 \begin{align}
-\sum_{n \leq x} \ln n = \sum_{n \leq x} \Lambda(n) \floor*{\frac{x}{n}}. 
+\sum_{n \leq x} \ln n = \sum_{n \leq x} \Lambda(n) \floor{\frac{x}{n}}. 
 \end{align}
 De ac\'a, en uso del \cref{lem11} conseguimos
 \begin{align}
@@ -210,18 +210,15 @@ De ac\'a, en uso del \cref{lem11} conseguimos
 \end{align}
 dado que, por el \cref{lem12}, $\Psi(x) = O(x)$ claramente implica $O(\Psi(x))=O(x)$. 
 Si aplicamos el \cref{lem09} al lado izquierdo desembocamos en
-\begin{align}
-x\ln x - x + O(\ln x) = x \sum_{n \leq x} \frac{\Lambda(n)}{n} + O(x). 
-\end{align}
-Al despejar obtenemos 
-\begin{align}
-\sum_{n \leq x} \frac{\Lambda(n)}{n} &= \frac{x \ln x}{x} - 1 + O\left(\frac{\ln x}{x}\right) + O(1) \\
-&= \ln x - 1 + O(1) + O\left(\frac{\ln x}{x}\right) \\
-%&\leq \ln x - 1 + c_0 + O(1) \\
-%&\leq \ln x + c_1 \\
-&= \ln x + O(1),
-\end{align}
-pues $-1 + O(1)+ O(\ln x/x)$ es acotado. 
+  \[
+    x\ln x - x + O(\ln x) = x \sum_{n \leq x} \frac{\Lambda(n)}{n} + O(x). 
+  \]
+  Al despejar obtenemos 
+  \begin{align*}
+    \sum_{n \leq x} \frac{\Lambda(n)}{n} &= \ln x - 1 + O(1) + O\parentheses{\frac{\ln x}{x}} \\
+    &= \ln x + O(1),
+  \end{align*}
+  pues \(-1 + O(1)+ O(\ln x/x)\) es acotado. 
 \end{proof}
 
 \begin{lemma}\label{lem15}
@@ -364,14 +361,13 @@ Directo de la definici\'on observamos que se cumple
 Notemos que al mismo tiempo esta sumatoria tiene apenas una cantidad finita de t\'erminos efectivos puesto que la funci\'on $\vartheta$ 
 solo tiene sentido cuando es evaluada en valores mayores o iguales a $2$. 
 Para un $x$ espec\'ifico,  hallamos ese momento $m=m(x)$ mediante la cadena 
-\begin{align}
-x^\frac{1}{m} &\geq 2 \\
-x^\frac{2}{m} &\geq 4 \\
-x^\frac{2}{m} &> e \\
-\frac{2}{m}\ln x &> \ln e \\
-\frac{2}{m}\ln x &> 1 \\
-m &< 2 \ln x
-\end{align}
+\begin{align*}
+  x^\frac{1}{m} &\geq 2 \\
+  x^\frac{2}{m} &\geq 4 \\
+  x^\frac{2}{m} &> e \\
+  \frac{2}{m}\ln x &> \ln e \\
+  2 \ln x &> m
+\end{align*}
 y notamos que para valores mayores $m = \floor{2 \ln x}$ los constituyentes de la suma son nulos.
 Ahora podemos escribir a $\Psi$ como 
 \begin{align}
@@ -389,7 +385,7 @@ su logaritmo contribuir\'a a la sumatoria tantas veces como las ra\'ices de $x$ 
 entre $1$ y $k$, donde $k$ es el m\'aximo entero que obedece $p^k \le x$.  
 F\'acilmente hallamos que este m\'aximo est\'a dado por 
 \begin{align}
-k = \floor*{\frac{\ln x}{\ln p}}.
+k = \floor{\frac{\ln x}{\ln p}}.
 \end{align}
 
 Por su parte, para forzar por lo menos $p^2 \le x$, se necesita $p \le \sqrt{x}$,
@@ -397,9 +393,9 @@ detalle importante que aprovecharemos.
 
 Ahora analicemos la forma equivalente de la doble sumatoria
 \begin{align}
-\sum_{n = 2}^m \sum_{p^n \leq x} \ln p &= \sum_{p \leq \sqrt{x}} \, \, \sum_{2 \leq n \leq \floor*{\frac{\ln x}{\ln p}}} \ln p \\
-&= \sum_{p \leq \sqrt{x}} \ln p \sum_{2 \leq n \leq \floor*{\frac{\ln x}{\ln p}}} 1 \\
-&\leq \sum_{p \leq \sqrt{x}} \ln p \floor*{\frac{\ln x}{\ln p}} \\
+\sum_{n = 2}^m \sum_{p^n \leq x} \ln p &= \sum_{p \leq \sqrt{x}} \, \, \sum_{2 \leq n \leq \floor{\frac{\ln x}{\ln p}}} \ln p \\
+&= \sum_{p \leq \sqrt{x}} \ln p \sum_{2 \leq n \leq \floor{\frac{\ln x}{\ln p}}} 1 \\
+&\leq \sum_{p \leq \sqrt{x}} \ln p \floor{\frac{\ln x}{\ln p}} \\
 &\leq \sum_{p \leq \sqrt{x}} \ln p \left(\frac{\ln x}{\ln p}\right) \\
 &= \sum_{p \leq \sqrt{x}} \ln x \\
 &= \ln x \sum_{p \leq \sqrt{x}} 1 \\
