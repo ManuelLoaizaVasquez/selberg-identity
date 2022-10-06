@@ -142,33 +142,37 @@ alcanzando nuestro objetivo.
   concluyendo trivialmente con la propiedad.
 \end{proof}
 
-\begin{lemma}\label{lem12}
-Para todo $x \geq 1$ tenemos
-\[
-\Psi(x) = O(x).
-\]
+\begin{lemma}\label{lem:05}
+  Para todo \(x \geq 1\) tenemos
+  \[
+    \Psi(x) = O(x).
+  \]
 \end{lemma}
 
 \begin{proof}
-Usaremos el desarrollo del teorema de Chebyshev por Diamond \cite{Diamond} (ver tambi\'en \cite{Apostol}) 
-\begin{align}
-A \leq \liminf \frac{\Psi(x)}{x} \leq \limsup \frac{\Psi(x)}{x} \leq \frac{6A}{5}
-\end{align}
-con $A = -\frac{\ln 1}{1} + \frac{\ln 2}{2} + \frac{\ln 3}{3} + \frac{\ln 5}{5} - \frac{\ln 30}{30} \approx 0.92129202293409078091340844996160...$
-Reescribimos la parte derecha de la desigualdad con valor absoluto ya que es una funci\'on positiva cual
-\begin{align}
-\limsup \frac{|\Psi(x)|}{x} \leq \frac{6A}{5}.
-\end{align}
-Por definici\'on existe $n_0$ a partir del cual se tiene 
-\begin{align}
-\frac{|\Psi(x)|}{x} \leq \frac{6A}{5},
-\end{align}
-es decir, para todo $x > n_0$.
-Como ello equivale a
-\begin{align}
-|\Psi(x)| \leq \left(\frac{6A}{5}\right) x,
-\end{align}
-se consigue $\Psi(x) = O(x)$.
+  Usaremos el desarrollo del teorema de Chebyshev por Diamond \cite{Diamond1982}
+  \[
+    A \leq \liminf \frac{\Psi(x)}{x} \leq \limsup \frac{\Psi(x)}{x} \leq \frac{6A}{5}
+  \]
+  con
+  \[
+    A = -\frac{\ln 1}{1} + \frac{\ln 2}{2} + \frac{\ln 3}{3} + \frac{\ln 5}{5} - \frac{\ln 30}{30}
+    \approx 0.92129202293409078091340844996160...
+  \]
+  Reescribimos la parte derecha de la desigualdad con valor absoluto ya que es una funci\'on positiva cual
+  \[
+    \limsup \frac{\abs{\Psi(x)}}{x} \leq \frac{6A}{5}.
+  \]
+  Por definici\'on existe \(n_0\) a partir del cual se tiene 
+  \[
+    \frac{\abs{\Psi(x)}}{x} \leq \frac{6A}{5},
+  \]
+  es decir, para todo \(x \geq n_0\).
+  Como ello equivale a
+  \[
+    \abs{\Psi(x)} \leq \parentheses{\frac{6A}{5}} x,
+  \]
+  se consigue \(\Psi(x) = O(x)\).
 \end{proof}
 
 \begin{lemma}\label{lem13}
