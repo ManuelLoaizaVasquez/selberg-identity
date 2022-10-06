@@ -53,7 +53,7 @@ reemplazamos \eqref{eq:01} tras el uso de la f\'ormula de sumaci\'on de Euler
 \begin{align*}
   \sum_{n \leq x} \frac{1}{n} &= \int_1^x \frac{1}{t} \, dt +
   \int_1^x \parentheses{t - \floor{t}} \parentheses{-\frac{1}{t^2}} \, dt
-  + \parentheses{1 - \floor{1}} - \parentheses{x - \floor{x}} \parentheses{\frac{1}{x}} + 1 \\
+  - \parentheses{x - \floor{x}} \parentheses{\frac{1}{x}} + 1 \\
   &= \ln x - \int_1^x \frac{t - \floor{t}}{t^2} \, dt + 1 - \frac{x - \floor{x}}{x} \\
   &= \ln x - \int_1^x \frac{t - \floor{t}}{t^2} \, dt
   + 1 - \int_1^{\infty} \frac{t - \floor{t}}{t^2} \, dt +
@@ -67,25 +67,28 @@ reemplazamos \eqref{eq:01} tras el uso de la f\'ormula de sumaci\'on de Euler
 alcanzando nuestro objetivo.
 \end{proof}
 
-\begin{lemma}\label{lem09}
-Para todo $x \geq 1$ tenemos
-\[
-\sum_{n \leq x} \ln n = x\ln x - x + O(\ln x).
-\]
+\begin{lemma}\label{lem:02}
+  Para todo \(x \geq 1\) tenemos
+  \[
+    \sum_{n \leq x} \ln n = x\ln x - x + O\parentheses{\ln x}.
+  \]
 \end{lemma}
 
 \begin{proof}
-Esta vez utilizamos la f\'ormula de sumaci\'on de Euler en $f : [1, \infty) \to \BR$ con $f(x) = \ln x$, continua y diferenciable en toda la recta real positiva:  
-\begin{align}
-\sum_{n \leq x} \ln x &= \int_1^x \ln t \, dt + \int_1^x  \frac{t - \floor{t}}{t} dt + (\floor{x} - x) \ln x  \\
-&= (t \ln t - t) \big|_1^x + \int_1^x \frac{(t - \floor{t})}{t} \, dt + (\floor{x} - x) \ln x \\
-&= x \ln x - x + 1 + \int_1^x \frac{t - \floor{t}}{t} dt + (\floor{x} - x) \ln x \\
-&\leq x \ln x - x + 1 + \int_1^x \frac{1}{t} \,dt + \ln x \\
-&= x \ln x - x + 1 + 2 \ln x.
-\end{align}
-Como $1$ est\'a dominado por $\ln x$,  
-se cumple $\sum_{n \leq x} \ln n = x\ln x - x + O(\ln x)$, 
-lo anunciado. 
+  Esta vez utilizamos la f\'ormula de sumaci\'on de Euler en
+  \(f : [1, \infty) \to \BR\) con \(f(x) = \ln x\),
+  continua y diferenciable en toda la recta real positiva:  
+  \begin{align*}
+    \sum_{n \leq x} \ln x &= \int_1^x \ln t \, dt +
+    \int_1^x  \frac{t - \floor{t}}{t} \, dt + \parentheses{\floor{x} - x} \ln x  \\
+    &= x \ln x - x + 1 + \int_1^x \frac{t - \floor{t}}{t} \, dt
+    + \parentheses{\floor{x} - x} \ln x \\
+    &\leq x \ln x - x + 1 + \int_1^x \frac{1}{t} \,dt + \ln x \\
+    &= x \ln x - x + 1 + 2 \ln x.
+  \end{align*}
+  Como \(1\) est\'a dominado por \(\ln x\),
+  se cumple \(\sum_{n \leq x} \ln n = x\ln x - x + O(\ln x)\), 
+  lo anunciado.
 \end{proof}
 
 \begin{lemma}\label{lem10}
