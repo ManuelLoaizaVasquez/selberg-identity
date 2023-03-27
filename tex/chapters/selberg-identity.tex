@@ -301,10 +301,8 @@
   \]
 \end{proof}
 
-% \cite{Apostol1976, CLRS2009, Cohen1993, Diamond1982, GM1978, Levinson1969, Pritchard1981, Pritchard1982, Pritchard1983, Pritchard1987, Selberg1949}
-
 \begin{lemma}
-  \label{lem:2xlnx-ox}
+  \label{lem:psi-2xlnx-ox}
   Para todo \(x \geq 1\) tenemos
   \[
     \Psi(x) \ln x + \sum_{n \leq x}
@@ -570,7 +568,7 @@
 \end{proof}
 
 \begin{lemma}
-  \label{lem:2xlnx-ox}
+  \label{lem:theta-2xlnx-ox}
   Para todo \(x \geq 1\) tenemos
   \[
     \vartheta(x)\ln x
@@ -647,7 +645,7 @@
     = O(x).
   \]
   
-  Al inmiscuir \Cref{lem:2xlnx-ox}, esta relaci\'on se troca por
+  Al inmiscuir \Cref{lem:psi-2xlnx-ox}, esta relaci\'on se troca por
   \[
     2x\ln x + O(x) - \Psi(x)\ln x
     - \sum_{p \leq x} \vartheta\parentheses{\frac{x}{p}}\ln p = O(x),
@@ -659,7 +657,9 @@
   De ac\'a, el uso consecutivo de
   \Cref{lem:psi-is-theta-osqrtxlnx} (para \(\Psi\))
   \[
-    2x\ln x + O(x) = (\vartheta(x) + O(\sqrt{x}\ln x))\ln x + \sum_{p \leq x} \vartheta\left(\frac{x}{p}\right)\ln p \\  
+    2x\ln x + O(x)
+    = (\vartheta(x) + O(\sqrt{x}\ln x))\ln x +
+    \sum_{p \leq x} \vartheta\parentheses{\frac{x}{p}}\ln p \\  
   \]
   y \Cref{lem:ln2x-is-sqrtx} (para \(\ln^2 x\))
   \begin{align*}
@@ -702,65 +702,75 @@ Finalmente el resultado te\'orico m\'as importante de este cap\'itulo.
 \end{theorem}
 
 \begin{note}
-En la f\'ormula dada arriba es indistinto si toman $p,q$ distintos o si se permite que sean iguales. 
-En efecto, la diferencia entre una y otra alternativa es apenas  
-\[
-\sum_{p^2 \le x} (\ln p)^2 \le \sum_{p^2 \le x} (\ln x^{1/2})^2 \le \frac{\sqrt{x} \ln^2 x}{4}= O(x).  
-\]
+  En la f\'ormula dada arriba es indistinto si tomamos
+  \(p\) y \(q\) distintos o si se permite que sean iguales.
+  En efecto, la diferencia entre una y otra alternativa es apenas
+  \[
+    \sum_{p^2 \le x} (\ln p)^2
+    \le \sum_{p^2 \le x} (\ln x^{1/2})^2
+    \le \frac{\sqrt{x} \ln^2 x}{4}
+    = O(x).
+  \]
 \end{note}
 
 \begin{proof}[Prueba de la f\'ormula de Selberg]
-Consolidemos la diferencia en una \'unica suma 
-\begin{align}
-\vartheta(x)\ln x - \sum_{p \leq x} \ln^2 p &= \sum_{p \leq x} \ln p \ln x - \sum_{p \leq x} \ln p \ln p \\
-&= \sum_{p \leq x} \ln p (\ln x - \ln p) \\
-&= \sum_{p \leq x} \ln p \ln \left(\frac{x}{p}\right).\label{eq127}
-\end{align}
+  Consolidemos la diferencia en una \'unica suma 
+  \begin{align*}
+    \vartheta(x)\ln x - \sum_{p \leq x} \ln^2 p
+    &= \sum_{p \leq x} \ln p \ln x - \sum_{p \leq x} \ln p \ln p \\
+    &= \sum_{p \leq x} \ln p (\ln x - \ln p) \\
+    &= \sum_{p \leq x} \ln p \ln \parentheses{\frac{x}{p}}.\eqlabel{eq:lnp-lnxp}
+  \end{align*}
+  
+  A continuaci\'on recurrimos a una versi\'on gruesa de \Cref{lem:harmonic}:
+  Al ser \(1/x\) acotado para \(x \ge 0\), obtenemos  para la serie arm\'onica
+  \[
+    \sum_{n \leq x} \frac{1}{n}
+    = \ln x + \gamma + O\parentheses{\frac{1}{x}}
+    = \ln x + O(1),
+  \]
+  o, lo que es lo mismo,
+  \[
+    \ln x = \sum_{n \leq x} \frac{1}{n} + O(1).
+  \]
+  
+  Reeplazamos este nuevo estimado en \eqref{eq:lnp-lnxp} para conseguir
+  \begin{align*}
+    \vartheta(x)\ln x - \sum_{p \leq x} \ln^2 p
+    &= \sum_{p \leq x} \ln p \ln \parentheses{\frac{x}{p}}
+    = \sum_{p \leq x} \ln p \parentheses{\sum_{n \leq x/p} \frac{1}{n} + O(1)} \\
+    &= \sum_{p \leq x} \ln p \sum_{n \leq x/p} \frac{1}{n} + O\parentheses{\sum_{p \leq x} \ln p}
+    = \sum_{p \leq x} \sum_{n \leq x/p} \frac{\ln p}{n} + O\parentheses{\sum_{p \leq x} \ln p} \\
+    &= \sum_{n \leq x} \sum_{p \leq x/n} \frac{\ln p}{n} + O\parentheses{\sum_{p \leq x} \ln p}
+    = \sum_{n \leq x} \sum_{p \leq x/n} \frac{\ln p}{n} + O(\vartheta(x)).
+    \eqlabel{eq:sum-sum-lnpn-o}
+  \end{align*}
+  Pero una combinaci\'on de \Cref{lem:psi-is-ox} y \Cref{lem:psi-is-theta-osqrtxlnx} conduce a
+  \(\Psi(x)\) y \(\vartheta(x)\) est\'an en \(O(x)\),
+  propiedad que utilizaremos en la forma \(O(\vartheta(x))=O(x)\).
 
-A continuaci\'on recurrimos a una versi\'on gruesa del \Cref{lem08}:
-Al ser $\dfrac{1}{x}$ acotado para $x \ge 0$, obtenemos  para la serie arm\'onica 
-\begin{align}
-\sum_{n \leq x} \frac{1}{n} &= \ln x + \gamma + O\left(\frac{1}{x}\right) \\
-&= \ln x + O(1),  
-\end{align}
-o, lo que es lo mismo, 
-\begin{align}
-\ln x = \sum_{n \leq x} \frac{1}{n} + O(1). 
-\end{align}
-
-Reeplazamos este nuevo estimado en la Ecuaci\'on \ref{eq127} para conseguir 
-\begin{align}
-\vartheta(x)\ln x - \sum_{p \leq x} \ln^2 p &= \sum_{p \leq x} \ln p \ln \left(\frac{x}{p}\right) \\
-&= \sum_{p \leq x} \ln p \left(\sum_{n \leq \frac{x}{p}} \frac{1}{n} + O(1)\right) \\
-&= \sum_{p \leq x} \ln p \sum_{n \leq \frac{x}{p}} \frac{1}{n} + O\left(\sum_{p \leq x} \ln p\right) \\
-&= \sum_{p \leq x} \sum_{n \leq \frac{x}{p}} \frac{\ln p}{n} + O\left(\sum_{p \leq x} \ln p\right) \\
-&= \sum_{n \leq x} \sum_{p \leq \frac{x}{n}} \frac{\ln p}{n} + O\left(\sum_{p \leq x} \ln p\right) \\
-&= \sum_{n \leq x} \sum_{p \leq \frac{x}{n}} \frac{\ln p}{n} + O(\vartheta(x)).\label{eq136}
-\end{align}
-Pero una combinaci\'on de \Cref{lem12} y \Cref{lem18} conduce a 
-\begin{align}
-\Psi(x) &= O(x),  \\
-\vartheta(x) &= O(x),
-\end{align}
-propiedad que utilizaremos en la forma $O(\vartheta(x))=O(x)$.
-
-A continuaci\'on desdoblamos uno de los sumandos en Ecuaci\'on \ref{eq136} para llegar a 
-\begin{align}
-\vartheta(x)\ln x - \sum_{p \leq x} \ln^2 p &= \sum_{n \leq x} \sum_{p \leq \frac{x}{n}} \frac{\ln p}{n} + O(x) \\
-&= \sum_{n \leq x} \frac{1}{n}\sum_{p \leq \frac{x}{n}} \ln p + O(x) \\
-&= \sum_{n \leq x} \frac{1}{n}\cdot \vartheta\left(\frac{x}{n}\right) + O(x) \\
-%&= \sum_{n \leq x} \frac{O\left(\frac{x}{n}\right)}{n} + O(x) \\
-&= O\left(x \sum_{n \leq x} \frac{1}{n^2}\right) + O(x) \\
-&= O(2x)+O(x)=O(x), 
-\end{align}
-pues la sumatoria de rec\'iprocos al cuadrado est\'a acotada por $2$. 
-
-Para el remate es cuesti\'on de reemplazar en el \Cref{lem20} y lograr  
-\begin{align}
-2x\ln x + O(x) &= \vartheta(x)\ln x + \sum_{p \leq x} \vartheta\left(\frac{x}{p}\right)\ln p  \\
-&= \sum_{p \leq x} \ln^2 p + O(x) + \sum_{p \leq x} \vartheta\left(\frac{x}{p}\right)\ln p  \\
-&= \sum_{p \leq x} \ln^2 p + \sum_{p \leq x} \sum_{q \leq \frac{x}{p}} \ln q \ln p  \\
-&= \sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q, 
-\end{align}
-la f\'ormula de Selberg.
+  A continuaci\'on desdoblamos uno de los sumandos en \eqref{eq:sum-sum-lnpn-o} para llegar a 
+  \begin{align*}
+    \vartheta(x)\ln x - \sum_{p \leq x} \ln^2 p
+    &= \sum_{n \leq x} \sum_{p \leq x/n} \frac{\ln p}{n} + O(x) \\
+    &= \sum_{n \leq x} \frac{1}{n}\sum_{p \leq x/n} \ln p + O(x) \\
+    &= \sum_{n \leq x} \frac{1}{n} \cdot \vartheta\parentheses{\frac{x}{n}} + O(x) \\
+    &= O\parentheses{x \sum_{n \leq x} \frac{1}{n^2}} + O(x) \\
+    &= O(2x) + O(x) \\
+    &= O(x),
+  \end{align*}
+  pues la sumatoria de rec\'iprocos al cuadrado est\'a acotada por \(2\).
+  
+  Para el remate es cuesti\'on de reemplazar en \Cref{lem:theta-2xlnx-ox} y lograr  
+  \begin{align*}
+    2x\ln x + O(x)
+    &= \vartheta(x)\ln x
+    + \sum_{p \leq x} \vartheta\parentheses{\frac{x}{p}}\ln p  \\
+    &= \sum_{p \leq x} \ln^2 p + O(x)
+    + \sum_{p \leq x} \vartheta\parentheses{\frac{x}{p}}\ln p  \\
+    &= \sum_{p \leq x} \ln^2 p
+    + \sum_{p \leq x} \sum_{q \leq x/p} \ln q \ln p  \\
+    &= \sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q,
+  \end{align*}
+  la f\'ormula de Selberg.
 \end{proof}
