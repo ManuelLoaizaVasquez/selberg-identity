@@ -6,7 +6,7 @@
 
 \chapter[Preliminares Matem\'aticos]
 {Preliminares Matem\'aticos}
-\label{Chapter02}
+\label{ch:preliminaries}
 
 En ruta a la identidad de Selberg,
 tendremos que recordar algunas definiciones y estimados bastante conocidos.
@@ -20,7 +20,7 @@ Dada una funci\'on \(g\) denotamos \(O(g(x))\) al conjunto de funciones
 \]
 
 \begin{theorem}[F\'ormula de sumaci\'on de Euler]
-\label{thm:02:01}
+\label{thm:euler}
 Si \(f\) tiene una derivada continua \(f'\) en el intervalo \([a, b]\)
 con \(0 < a < b\), entonces se satisface
 \[
@@ -38,6 +38,19 @@ definimos su \textbf{producto de Dirichlet} como la funci\'on aritm\'etica
   = f * g(n)
   = \sum_{d \mid n} f(d) g \parentheses{\frac{n}{d}}.
 \]
+
+\begin{theorem}
+  [F\'ormula de Inversi\'on de M\"{o}bius]
+  \label{thm:mobius}
+  La ecuaci\'on
+  \[
+    f(n) = \sum_{d \mid n} g(d)  
+  \]
+  equivale a
+  \[
+    g(n) = \sum_{d \mid n} f(d) \mu \parentheses{\frac{n}{d}}  
+  \]
+\end{theorem}
 
 La funci\'on \(\boldsymbol{\mu}\) \textbf{de M\"{o}bius} es definida como sigue. 
 Primero definimos 
@@ -70,7 +83,7 @@ Para \(x > 0\) definimos la funci\'on
   \Psi(x)
   = \sum_{n \leq x} \Lambda(n) 
   = \sum_{\substack{m = 1\\p^m \leq x}}^\infty \sum_p \Lambda(p^m)
-  = \sum_{m = 1}^\infty \sum_{p \leq x^{\frac{1}{m}}} \ln p.
+  = \sum_{m = 1}^\infty \sum_{p \leq x^{1/m}} \ln p.
 \]
 
 Para todo \(x > 0\) definimos la funci\'on \(\boldsymbol{\vartheta}\)
