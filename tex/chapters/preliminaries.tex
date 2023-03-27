@@ -1,0 +1,93 @@
+\pretolerance=20000
+\tolerance=30000
+\setlength{\headheight}{14.61858pt}
+\selectlanguage{spanish}
+\pagestyle{fancy}
+
+\chapter[Preliminares Matem\'aticos]
+{Preliminares Matem\'aticos}
+\label{ch:preliminaries}
+
+En ruta a la identidad de Selberg,
+tendremos que recordar algunas definiciones y estimados bastante conocidos.
+
+Dada una funci\'on \(g\) denotamos \(O(g(x))\) al conjunto de funciones
+\[
+  \begin{gathered}
+    O(g(x)) = \{f : \text{existe una constante positiva } c \text{ y un momento } x_0 \text{ tal que} \\
+    0 \leq f(x) \leq cg(x) \text{ para todo } x \geq x_0\}.
+  \end{gathered}
+\]
+
+\begin{theorem}[F\'ormula de sumaci\'on de Euler]
+\label{thm:euler}
+Si \(f\) tiene una derivada continua \(f'\) en el intervalo \([a, b]\)
+con \(0 < a < b\), entonces se satisface
+\[
+  \sum_{a < n \leq x} f(n) = \int_a^b f(t) \, dt +
+  \int_a^b (t - \floor{t}) f'(t) \, dt +
+  f(a)(\floor{a} - a) - f(b)(\floor{b} - b).
+\]
+\end{theorem}
+
+Sean \(f\) y \(g\) dos funciones aritm\'eticas, 
+definimos su \textbf{producto de Dirichlet} como la funci\'on aritm\'etica
+\(h\) definida puntualmente por 
+\[
+  h(n)
+  = f * g(n)
+  = \sum_{d \mid n} f(d) g \parentheses{\frac{n}{d}}.
+\]
+
+\begin{theorem}
+  [F\'ormula de Inversi\'on de M\"{o}bius]
+  \label{thm:mobius}
+  La ecuaci\'on
+  \[
+    f(n) = \sum_{d \mid n} g(d)  
+  \]
+  equivale a
+  \[
+    g(n) = \sum_{d \mid n} f(d) \mu \parentheses{\frac{n}{d}}  
+  \]
+\end{theorem}
+
+La funci\'on \(\boldsymbol{\mu}\) \textbf{de M\"{o}bius} es definida como sigue. 
+Primero definimos 
+\[
+  \mu(1) = 1.
+\]
+Si \(n > 1\),
+expresamos \(n = p_1^{\alpha_1} \cdots p_k^{\alpha_k}\) y definimos
+\[
+  \mu(n) = 
+  \begin{cases}
+    (-1)^k &\text{si } \alpha_1 = \cdots = \alpha_k = 1, \\
+    0 &\text{en otro caso}. 
+  \end{cases}
+\]
+
+Para \(n\) entero positivo definimos la funci\'on
+\(\boldsymbol{\Lambda}\) \textbf{de Mangoldt} v\'ia 
+\[
+  \Lambda(n) =
+  \begin{cases}
+    \ln p &\text{si } n = p^m \text{ para alg\'un } m \geq 1,\\
+    0 &\text{en otro caso.}
+  \end{cases}
+\]
+
+Para \(x > 0\) definimos la funci\'on
+\(\boldsymbol{\Psi}\) \textbf{de Chebyshev} con la f\'ormula
+\[
+  \Psi(x)
+  = \sum_{n \leq x} \Lambda(n) 
+  = \sum_{\substack{m = 1\\p^m \leq x}}^\infty \sum_p \Lambda(p^m)
+  = \sum_{m = 1}^\infty \sum_{p \leq x^{1/m}} \ln p.
+\]
+
+Para todo \(x > 0\) definimos la funci\'on \(\boldsymbol{\vartheta}\)
+\textbf{de Chebyshev} mediante la ecuaci\'on
+\[
+  \vartheta(x) = \sum_{p \leq x} \ln p.
+\]

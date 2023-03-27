@@ -15,13 +15,13 @@
 \renewcommand{\contentsname}{Contenido}
 \renewcommand*{\proofname}{Prueba}
 
-\newtheorem{theorem}{Teorema}
-\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{corollary}{Corolario}[theorem]
 \newtheorem{lemma}[theorem]{Lema}
-\newtheorem*{proposition}{Proposici\'on}
+\newtheorem{proposition}[theorem]{Proposici\'on}
 \newtheorem{conjecture}[theorem]{Conjetura}
-\newtheorem*{postulate}{Postulado}
-\newtheorem*{axiom}{Axioma}
+\newtheorem{postulate}[theorem]{Postulado}
+\newtheorem{axiom}[theorem]{Axioma}
 
 \theoremstyle{definition}
 \newtheorem{defn}[theorem]{Definici\'on}
