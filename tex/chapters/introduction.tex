@@ -10,7 +10,7 @@
 
 \vspace*{1cm}
 
-El Teorema del N\'umero Primo ha sido extensivamente estudiado
+El teorema del n\'umero primo ha sido extensivamente estudiado
 \cite{
   Breusch1960,
   Choudhary2017,
@@ -22,57 +22,65 @@ El Teorema del N\'umero Primo ha sido extensivamente estudiado
   Pan2023,
   Richter2021,
   Selberg1949,
-  Shapiro1959}
-(y muchos m\'as).
-Este teorema afirma que \(\Psi(x)\) se aproxima a \(x\)
-conforme \(x\) se hace arbitrariamente grande.
+  Shapiro1959}.
+Este teorema afirma que la funci\'on \(\pi(x)\) se aproxima
+asint\'oticamente a \(x / \ln x\).
 
+En \(1852\), Chebyshev \cite{Chebyshev1852} acota \(\pi(x) / (x / \ln x)\)
+y concluye que el l\'imite es igual a \(1\) en caso exista.
+En \(1896\), Hadamard \cite{Hadamard1896} y de la Valle\'e Poussin
+probaron el PNT v\'ia la funci\'on \(\zeta\) de Riemann.
 En \(1949\), Selberg \cite{Selberg1949}
-prob\'o este teorema sin uso de An\'alisis Complejo.
+prob\'o este teorema elegantemente sin uso de an\'alisis complejo.
 Un par de meses luego, Erdős \cite{Erdos1949}
 prob\'o el teorema mediante el abuso de estimados tauberianos.
 En \(1959\), Shapiro \cite{Shapiro1959}
-prueba un par de teoremas tauberianos y equivalencias relacionadas
-al trabajo de \cite{Erdos1949},
-lo cual desemboc\'o tambi\'en en la prueba del TNP.
+prueba un par de teoremas tauberianos y equivalencias relacionadas a \cite{Erdos1949},
+lo cual desemboc\'o tambi\'en en una nueva prueba del PNT.
 En \(1969\), Levinson \cite{Levinson1969} se inspira de \cite{Selberg1949, Breusch1960}
-para crear una demostraci\'on elemental contundente haciendo uso de la funci\'on resto.
-En \(2017\), Choudhary \cite{Choudhary2017} prueba elementalmente el TNP
-reemplazando resultados de \cite{Levinson1969}
+para crear una demostraci\'on elemental
+profundizando el estudio de la funci\'on resto.
+En \(2017\), Choudhary \cite{Choudhary2017} prueba elementalmente el PNT
+reemplazando ciertos resultados de \cite{Levinson1969}
 por corolarios de \cite{Shapiro1959}.
 
-\section{Nuestros Resultados}
-El prop\'osito de este trabajo es doble:
-primero, presentamos una nueva prueba elemental del TNP
-tras demostrar la f\'ormula de Selberg en todo rigor
-(ver enunciado a continuaci\'on);
-luego diseñaremos y analizaremos la eficiencia de algoritmos e
-implementaremos programas para su verificaci\'on num\'erica.
+\section{Nuestros resultados}
+
+El prop\'osito de este trabajo es presentar una nueva prueba elemental del PNT
+tras demostrar la f\'ormula de Selberg en todo rigor.
 
 \bigskip
 
 Empezamos enunciando la f\'ormula asint\'otica de Selberg. 
-En todo lo que sigue los s\'imbolos \(p, q\) se referir\'an a
+En todo lo que sigue los s\'imbolos \(p\) y \(q\) se referir\'an a
 n\'umeros primos positivos.
 
-\bigskip
+\begin{theorem}
+  [Identidad de Selberg]
+  Para todo n\'umero real \(x\) mayor o igual a \(1\)
+  se cumple la f\'ormula
+  \[
+    \sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q = 2x\ln x + O(x).
+  \]
+\end{theorem}
 
-\noindent
-\textbf{Teorema (La identidad de Selberg)}
-\textit{Para todo n\'umero real \(x\) mayor o igual a \(1\)
-se cumple la f\'ormula de Selberg}
-\[
-  \sum_{p \leq x} \ln^2(p) + \sum_{pq \leq x} \ln(p) \ln(q) = 2x\ln(x) + O(x).
-\]
+Ahora enunciamos uno de los todopoderosos teoremas
+de la teor\'ia anal\'itica de n\'umeros.
+Considere \(\pi(x)\) la funci\'on que cuenta
+la cantidad de n\'umeros primos menores o iguales a \(x\).
+
+\begin{theorem}
+  [Teorema del n\'umero primo]
+  El l\'imite
+  \(\displaystyle\lim_{x \to \infty} \frac{\pi(x)}{x / \ln x}\)
+  existe y es igual a \(1\).
+\end{theorem}
 
 \section{Nuestras t\'ecnicas}
 Para obtener nuestros resultados,
 describiremos a continuaci\'on
-c\'omo hemos hecho uso de
-An\'alisis Real,
-Teor\'ia Anal\'itica de N\'umeros,
-Algoritmos y
-Programaci\'on.
+c\'omo hemos hecho uso de an\'alisis real y
+teor\'ia anal\'itica de n\'umeros.
 
 \textbf{Identidad de Selberg.}
 \cite{Selberg1949} nos provee esta identidad como
@@ -82,41 +90,36 @@ Para demostrarla, usaremos como hoja de ruta los trabajos
 sin utilizar todas las f\'ormulas asint\'oticas de \cite{Chebyshev1852}
 ni haciendo uso de los teoremas tauberianos de \cite{Shapiro1959}.
 En su reemplazo, utilizaremos nuestra creatividad y
-ciertos resultados de \cite{Mertens1874, TI1951}.
+ciertos resultados de \cite{Chebyshev1852, Apostol1976, TI1951}.
 
-\textbf{Funci\'on Resto}
-
-\textbf{Teorema del N\'umero Primo}
-
-
-\textbf{Algoritmos}
+\textbf{Funci\'on resto.}
+Nuestro an\'alisis de la funci\'on resto es una modificaci\'on de
+las propiedades estudiadas en \cite{Selberg1949} usando la desigualdad
+\[
+  \abs{R(x)} \leq \frac{2}{\ln^2 x}
+  \sum_{n \leq x} \frac{\ln n}{n} \abs{R \parentheses{\frac{x}{n}}}
+  + O\parentheses{\frac{x}{\ln x}}
+\]
+en reemplazo de
+\[
+  \abs{R(x)} \leq \frac{1}{\ln x}
+  \sum_{n \leq x} \abs{R \parentheses{\frac{x}{n}}}
+  + O\parentheses{x \frac{\ln \ln x}{\ln x}}.
+\]
 
 \section{Notaci\'on}
 Emplearemos \(f(x) = O(g(x))\) en vez de \(f \in O(g)\)
 a pesar de que no se trate de una igualdad de conjuntos sino
-pertenencia de una funci\'on a una clase de funciones; 
-de la misma manera
-trataremos la aritm\'etica entre familias de funciones
-con notaci\'on big-\(O\).
+pertenencia de una funci\'on a una clase determinada de funciones.
+De la misma manera trataremos la aritm\'etica entre familias de funciones
+con notaci\'on \(O\).
 Los s\'imbolos \(p\) y \(q\), en caso de no especificarse,
 har\'an referencia a n\'umeros primos positivos.
-Asimismo, \(\lg n\) har\'a referencia al logaritmo binario;
-es decir, \(\log_2 n\).
-% TODO: Anadir polylog(n)
 
-\section{Organizaci\'on}
-En la secci\'on 2 presentaremos los teoremas y definiciones que no probaremos
-pero  son lugar com\'un en \'area,
-utilizaremos como referencia
-\cite{Apostol1976},
-\cite{CLRS2009} y
-\cite{FGST2020}.
-En la secci\'on 3 realizaremos la demostraci\'on de la identidad de Selberg
-tras la prueba de ciertos lemas intermedios.
-En la secci\'on 4 propondremos los algoritmos CribaLineal,
-Buscar\'UltimaPosici\'on y CalcularSuma para poder cumplir con
-el objetivo de realizar estimados con el algoritmo EstimarConstante,
-el mismo que emplea los tres algoritmos anteriores. 
-Todos los algoritmos tendr\'an su respectivo an\'alisis de complejidad asint\'otico.
-En la secci\'on 5 implementaremos los algoritmos de la secci\'on anterior
-en el lenguaje de programaci\'on C++ y presentaremos tablas con los estimados.
+% \section{Organizaci\'on}
+% En la secci\'on 2 presentaremos los teoremas y definiciones que no probaremos
+% pero  son lugar com\'un en \'area,
+% utilizaremos como referencia
+% \cite{Apostol1976}.
+% En la secci\'on 3 realizaremos la demostraci\'on de la identidad de Selberg
+% tras la prueba de ciertos lemas intermedios.
