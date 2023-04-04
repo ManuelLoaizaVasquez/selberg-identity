@@ -79,22 +79,21 @@ la cantidad de n\'umeros primos menores o iguales a \(x\).
 \section{Nuestras t\'ecnicas}
 Para obtener nuestros resultados,
 describiremos a continuaci\'on
-c\'omo hemos hecho uso de an\'alisis real y
-teor\'ia anal\'itica de n\'umeros.
+c\'omo hemos hecho uso del an\'alisis real y
+la teor\'ia anal\'itica de n\'umeros.
 
 \textbf{Identidad de Selberg.}
-\cite{Selberg1949} nos provee esta identidad como
+\cite[secci\'on 2]{Selberg1949} nos provee esta identidad como
 la herramienta m\'as poderosa para alcanzar el premio gordo.
-Para demostrarla, usaremos como hoja de ruta los trabajos
-\cite{Diamond1982, Choudhary2017}
-sin utilizar todas las f\'ormulas asint\'oticas de \cite{Chebyshev1852}
-ni haciendo uso de los teoremas tauberianos de \cite{Shapiro1959}.
+Para demostrarla, usaremos como hoja de ruta \cite{Choudhary2017}
+sin utilizar las f\'ormulas que derivan de \cite[teorema 3.17]{Choudhary2017}
+ni los estimados tauberianos de Shapiro desarrollados en \cite[secci\'on 4]{Choudhary2017}.
 En su reemplazo, utilizaremos nuestra creatividad y
-ciertos resultados de \cite{Chebyshev1852, Apostol1976, TI1951}.
+ciertos resultados de \cite{Apostol1976, Diamond1982, TI1951}.
 
 \textbf{Funci\'on resto.}
 Nuestro an\'alisis de la funci\'on resto es una modificaci\'on de
-las propiedades estudiadas en \cite{Selberg1949} usando la desigualdad
+las propiedades estudiadas en \cite[secci\'on 3]{Selberg1949} usando la desigualdad
 \[
   \abs{R(x)} \leq \frac{2}{\ln^2 x}
   \sum_{n \leq x} \frac{\ln n}{n} \abs{R \parentheses{\frac{x}{n}}}
