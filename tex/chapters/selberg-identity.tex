@@ -8,6 +8,20 @@
 {La identidad de Selberg}
 \label{ch:selberg}
 
+El objetivo de este cap\'itulo es demostrar \cite[ecuaci\'on 2.8]{Selberg1949}.
+La prueba cl\'asica de Selberg depende de la funci\'on
+n\'umero de divisores de \(n\) denotada por \(\tau(n)\)
+y la funci\'on \(\theta_n(x)\) definida como \(\sum_{d \, \mid \, n} \mu(d) \ln^2(x / d)\).
+Nosotros no usamos estas funciones
+sino utilizamos las f\'ormulas asint\'oticas
+de \cite[corolario 4.2]{Choudhary2017}.
+Choudhary enuncia estas como corolarios de los
+teoremas tauberianos de \cite{Shapiro1959}
+desarrollados en \cite[teorema 4.1]{Choudhary2017}.
+En contraste, nuestras pruebas son trasparentes en uso
+de aquellos teoremas tauberianos y ser\'an fruto de
+arar \cite{Apostol1976} junto con brillantes ideas de art\'iculos que gravitan en torno al tema.
+
 \begin{lemma}
   \label{lem:harmonic}
   Para todo \(x \geq 1\) tenemos
@@ -158,7 +172,7 @@
 \end{lemma}
 
 \begin{proof}
-  Usaremos el desarrollo de los estimados de Chebyshev de \cite{Diamond1982} dado por
+  Usaremos el desarrollo de los estimados de Chebyshev de \cite[secci\'on 3]{Diamond1982} dado por
   \[
     A \leq \liminf \frac{\Psi(x)}{x} \leq \limsup \frac{\Psi(x)}{x} \leq \frac{6A}{5},
   \]
@@ -245,7 +259,7 @@
 \begin{lemma}
   \label{lem:sum-mu-g}
   Para \(f, g : [1, \infty) \to \BR\)
-  sujetos a  \(g(x) = \sum_{n \leq x} f\parentheses{\frac{x}{n}} \ln x\) tenemos
+  sujetos a  \(g(x) = \sum_{n \leq x} f\parentheses{x/n} \ln x\) tenemos
   \[
     \sum_{n \leq x} \mu(n) g\parentheses{\frac{x}{n}}
     = f(x) \ln(x) + \sum_{n \leq x} f\parentheses{\frac{x}{n}} \Lambda(n).
@@ -370,9 +384,12 @@
     \sum_{n \leq x} \parentheses{\Psi\parentheses{\frac{x}{n}} - \frac{x}{n} + \gamma + 1} \Lambda(n).
     \eqlabel{eq:psi-lnx-sum-psi-mangoldt}
   \]
-  
+
   El remate consiste en analizar ambos miembros de la desigualdad por separado.
-  Utilizamos la desigualdad triangular junto con el hecho de que se cumple
+  Tatuzawa e Iseki \cite{TI1951} trabajaron
+  \eqref{eq:psi-lnx-sum-psi-mangoldt} mediante integrales.
+  Nosotros hemos evitado aquello astutamente haciendo uso de
+  la desigualdad triangular junto con el hecho de que se cumple
   \(g(x) = O(\ln^2 x)\) para obtener a la izquierda
   \[
     \abs{\sum_{n \leq x} \mu(n) g\parentheses{\frac{x}{n}}}
@@ -389,7 +406,6 @@
     = O(x).
     \eqlabel{eq:left-expression}
   \]
-  
   El t\'ermino de la derecha en \eqref{eq:psi-lnx-sum-psi-mangoldt} lo reordenamos cual
   \[
     \Psi(x)\ln x
@@ -417,10 +433,12 @@
   equivalente a lo aseverado.
 \end{proof}
 
-Tatuzawa e Iseki \cite{TI1951}
-trabajaron el \cref{lem:psi-2xlnx-ox} mediante integrales.
-Nosotros hemos evitado aquello astutamente haciendo
-uso de la desigualdad triangular.
+
+La prueba del lema siguiente es remedo del argumento utilizado en
+\cite[lema 4]{Levinson1969} para liquidar
+\[
+  \Psi(x) = \pi(x) \ln x + O \parentheses{\frac{x \ln \ln x}{\ln x}}.
+\]
 
 \begin{lemma}
   \label{lem:psi-is-theta-osqrtxlnx}
