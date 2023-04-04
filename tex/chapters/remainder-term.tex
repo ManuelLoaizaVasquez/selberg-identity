@@ -1,0 +1,50 @@
+\pretolerance=20000
+\tolerance=30000
+\setlength{\headheight}{14.61858pt}
+\selectlanguage{spanish}
+\pagestyle{fancy}
+
+\chapter[La funci\'on resto]
+{La funci\'on resto}
+\label{ch:remainder}
+
+En este cap\'itulo extraeremos propiedades m\'agicas
+de la funci\'on resto definida como \(R(x) = x - \vartheta(x)\)
+\cite[secci\'on 3]{Selberg1949}
+para posteriormente probar c\'omodamente el PNT
+como en la presentaci\'on original de Selberg.
+
+\begin{lemma}
+    \label{lem:rlnx1}
+    Para todo \(x \geq 1\) tenemos
+    \[
+        R(x) \ln x = -\sum_{p \leq x} \ln p \, R \parentheses{\frac{x}{p}} + O(x).
+    \]
+\end{lemma}
+
+\begin{proof}
+    Sustituiremos \(\vartheta\) en funci\'on de \(R\) en \cref{lem:theta-2xlnx-ox}
+    \begin{align*}
+        x\ln x + O(x)
+        &= R(x) \ln x
+        + \sum_{p \leq x} \ln p \, \vartheta \parentheses{\frac{x}{p}} \\
+        &= R(x) \ln
+        + \sum_{p \leq x} \ln p \parentheses{\frac{x}{p}
+        + R\parentheses{\frac{x}{p}}} \\
+        &= R(x) \ln x
+        + x \sum_{p \leq x} \frac{\ln p}{p}
+        + \sum_{p \leq x} \ln p \, R \parentheses{\frac{x}{p}}.
+    \end{align*}
+    Podr\'ia parecer que estamos listos, mas aparece un detalle min\'usculo por ajustar.
+    Para remediar este defecto trabajamos en su reemplazo con \cite[teorema 2]{Mertens1874}
+    \[
+        \sum_{p \leq x} \frac{\ln p}{p} = \ln x + O(1).
+    \]
+    Gracias a ello inferimos
+    \[
+        R(x) \ln x + x \ln x + O(x)
+        + \sum_{p \leq x} \ln p \, R \parentheses{\frac{x}{p}}
+        = x \ln x + O(x)
+    \]
+    y el resultado se desprende de manera inmediata.
+\end{proof}
