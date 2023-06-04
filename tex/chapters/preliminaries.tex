@@ -30,6 +30,17 @@ con \(0 < a < b\), entonces se satisface
 \]
 \end{theorem}
 
+\begin{theorem}[F\'ormula de sumaci\'on de Abel]
+\label{thm:abel}
+Sea \(a: \BN \to \BC\) una funci\'on aritm\'etica y
+\(A(x) = \sum_{n \leq x} a(n)\).
+Si \(f\) es una funci\'on con derivada continua en el intervalo
+\(\brackets{y, x}\) con \(0 < y < x\), entonces se cumple
+\[
+  \sum_{y < n \leq x} a(n) f(n) = A(x) f(x) - A(y) f(y) - \int_y^x A(t) f'(t) \, dt.  
+\]
+\end{theorem}
+
 Para dos funciones aritm\'eticas \(f\) y \(g\)
 definimos su \textbf{producto de Dirichlet} como la funci\'on aritm\'etica
 \(h\) definida puntualmente por 
