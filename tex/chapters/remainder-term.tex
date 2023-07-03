@@ -59,7 +59,19 @@ como en la presentaci\'on original de Selberg.
 \end{lemma}
 
 \begin{proof}
-    TODO.
+    Aplicamos \cite[teorema 2]{Mertens1874} en la siguiente sumatoria
+    \[
+        \sum_{q \leq x/p} \frac{\ln q}{q} = \ln x - \ln p + O(1)
+    \]
+    y acumulamos
+    \begin{align*}
+        \sum_{p \leq x} \frac{\ln p}{p}
+        \parentheses{\sum_{q \leq x / p} \frac{\ln q}{q}}
+        &= \sum_{p \leq x} \frac{\ln p}{p} \parentheses{\ln x - \ln p + O(1)} \\
+        &= \ln x \sum_{p \leq x} \frac{\ln p}{p} - \sum_{p \leq x} \frac{\ln^2 p}{p} + O\parentheses{\sum_{p \leq x}\frac{\ln p}{p}} \\
+        &= \ln x \parentheses{\ln x + O(1)} - \parentheses{} + O(\ln x) + O(1) \\
+        &= \frac{1}{2} \ln^2 x + O(\ln x).
+    \end{align*}
 \end{proof}
 
 \begin{lemma}
