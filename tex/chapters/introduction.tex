@@ -43,10 +43,20 @@ En \(2017\), Choudhary \cite{Choudhary2017} prueba elementalmente el PNT
 reemplazando ciertos resultados de \cite{Levinson1969}
 por corolarios de \cite{Shapiro1959}.
 
+El art\'iculo de Selberg es vital para las pruebas elementales posteriores.
+Levinson y Choudhary invierten más de la mitad de sus trabajos en
+probar la f\'ormula asint\'otica de Selberg para luego rematar
+el PNT v\'ia la funci\'on resto.
+Por otro lado, Breusch creativamente obtiene
+f\'ormulas asint\'oticas con la misma estructura que la de Selberg
+para funciones que \'el define en la primera parte de su art\'iculo.
+
 \section{Nuestros resultados}
 
-El prop\'osito de este trabajo es presentar una nueva prueba elemental del PNT
-tras demostrar la f\'ormula de Selberg en todo rigor.
+El prop\'osito de este trabajo es doble:
+en primer lugar presentaremos una nueva prueba elemental de la f\'ormula de Selberg en todo rigor;
+luego diseñaremos, analizaremos e implementaremos algoritmos
+para su verificaci\'on num\'erica.
 
 \bigskip
 
@@ -63,47 +73,64 @@ n\'umeros primos positivos.
   \]
 \end{theorem}
 
-Ahora enunciamos uno de los todopoderosos teoremas
-de la teor\'ia anal\'itica de n\'umeros.
-Considere \(\pi(x)\) la funci\'on que cuenta
-la cantidad de n\'umeros primos menores o iguales a \(x\).
+Ahora presentamos el aporte computacional en cuesti\'on.
 
 \begin{theorem}
-  [Teorema del n\'umero primo]
-  El l\'imite
-  \(\displaystyle\lim_{x \to \infty} \frac{\pi(x)}{x / \ln x}\)
-  existe y es igual a \(1\).
+  Sea \(x\) un n\'umero real mayor o igual a \(1\). Existe un algoritmo de tiempo \(O(x)\) que computa
+  \[
+    K(x) = \frac{\abs{
+      \sum_{p \leq x} \ln^2 p +
+      \sum_{pq \leq x} \ln p \ln q -
+      2 x \ln x
+    }}{x}.
+  \]
 \end{theorem}
 
+% Ahora enunciamos uno de los todopoderosos teoremas
+% de la teor\'ia anal\'itica de n\'umeros.
+% Considere \(\pi(x)\) la funci\'on que cuenta
+% la cantidad de n\'umeros primos menores o iguales a \(x\).
+
+% \begin{theorem}
+%   [Teorema del n\'umero primo]
+%   El l\'imite
+%   \(\displaystyle\lim_{x \to \infty} \frac{\pi(x)}{x / \ln x}\)
+%   existe y es igual a \(1\).
+% \end{theorem}
+
 \section{Nuestras t\'ecnicas}
-Para obtener nuestros resultados,
-describiremos a continuaci\'on
-c\'omo hemos hecho uso del an\'alisis real y
-la teor\'ia anal\'itica de n\'umeros.
 
 \textbf{Identidad de Selberg.}
 \cite[secci\'on 2]{Selberg1949} nos provee esta identidad como
-la herramienta m\'as poderosa para alcanzar el premio gordo.
+la herramienta m\'as poderosa para probar el PNT.
 Para demostrarla, usaremos como hoja de ruta \cite{Choudhary2017}
 sin utilizar las f\'ormulas que derivan de \cite[teorema 3.17]{Choudhary2017}
 ni los estimados tauberianos de Shapiro desarrollados en \cite[secci\'on 4]{Choudhary2017}.
 En su reemplazo, utilizaremos nuestra creatividad y
 ciertos resultados de \cite{Apostol1976, Diamond1982, TI1951}.
 
-\textbf{Funci\'on resto.}
-Nuestro an\'alisis de la funci\'on resto es una modificaci\'on de
-las propiedades estudiadas en \cite[secci\'on 3]{Selberg1949} usando la desigualdad
-\[
-  \abs{R(x)} \leq \frac{2}{\ln^2 x}
-  \sum_{n \leq x} \frac{\ln n}{n} \abs{R \parentheses{\frac{x}{n}}}
-  + O\parentheses{\frac{x}{\ln x}}
-\]
-en reemplazo de
-\[
-  \abs{R(x)} \leq \frac{1}{\ln x}
-  \sum_{n \leq x} \abs{R \parentheses{\frac{x}{n}}}
-  + O\parentheses{x \frac{\ln \ln x}{\ln x}}.
-\]
+\noindent
+\textbf{Experimentaci\'on num\'erica.}
+Nuestro algoritmo surge de la observaci\'on de que
+existen \(O(x/\ln x)\) primos menores o iguales a \(x\).
+As\'i, usando b\'usqueda binaria sobre
+n\'umeros primos y sumatorias precomputados linealmente,
+realizamos la estimaci\'on en tiempo \(O(x)\).
+
+% \textbf{Funci\'on resto.}
+% Nuestro an\'alisis de la funci\'on resto es una modificaci\'on de
+% las propiedades estudiadas en \cite[secci\'on 3]{Selberg1949} usando la desigualdad
+% \[
+%   \abs{R(x)} \leq \frac{2}{\ln^2 x}
+%   \sum_{n \leq x} \frac{\ln n}{n} \abs{R \parentheses{\frac{x}{n}}}
+%   + O\parentheses{\frac{x}{\ln x}}
+% \]
+% en reemplazo de
+% \[
+%   \abs{R(x)} \leq \frac{1}{\ln x}
+%   \sum_{n \leq x} \abs{R \parentheses{\frac{x}{n}}}
+%   + O\parentheses{x \frac{\ln \ln x}{\ln x}}.
+% \]
 
 \section{Notaci\'on}
 Emplearemos \(f(x) = O(g(x))\) en vez de \(f \in O(g)\)
