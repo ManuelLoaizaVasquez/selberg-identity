@@ -8,7 +8,7 @@
 {Preliminares matem\'aticos}
 \label{ch:preliminaries}
 
-En ruta al PNT
+En ruta a la identidad de Selberg
 tendremos que recordar algunas definiciones y estimados bastante conocidos.
 
 Dada una funci\'on \(g\) denotamos \(O(g(x))\) al conjunto de funciones
@@ -27,6 +27,17 @@ con \(0 < a < b\), entonces se satisface
   \sum_{a < n \leq x} f(n) = \int_a^b f(t) \, dt +
   \int_a^b (t - \floor{t}) f'(t) \, dt +
   f(a)(\floor{a} - a) - f(b)(\floor{b} - b).
+\]
+\end{theorem}
+
+\begin{theorem}[F\'ormula de sumaci\'on de Abel]
+\label{thm:abel}
+Sea \(a: \BN \to \BC\) una funci\'on aritm\'etica y
+\(A(x) = \sum_{n \leq x} a(n)\).
+Si \(f\) es una funci\'on con derivada continua en el intervalo
+\(\brackets{y, x}\) con \(0 < y < x\), entonces se cumple
+\[
+  \sum_{y < n \leq x} a(n) f(n) = A(x) f(x) - A(y) f(y) - \int_y^x A(t) f'(t) \, dt.  
 \]
 \end{theorem}
 

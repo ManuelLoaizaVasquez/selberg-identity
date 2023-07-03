@@ -4,324 +4,356 @@
 \selectlanguage{spanish}
 \pagestyle{fancy}
 
-\chapter[Algoritmos]
-{Algoritmos}
-\label{Chapter04}
+\chapter[Experimentaci\'on num\'erica]
+{Experimentaci\'on num\'erica}
+\label{ch:algorithms}
 
 \vspace*{1cm}
 
-\section{Algoritmo Principal}
-Adicional a la prueba del Teorema \ref{the22},
-hemos dise\~nado unos algoritmos para poder obtener estimados
-con la f\'ormula asint\'otica de Selberg.
+\section{Algoritmos}
+En esta secci\'on introduciremos a detalle nuestro algoritmo
+para estimar la f\'ormula asint\'otica de Selberg del \cref{ch:selberg}.
 Primero, realicemos ciertas manipulaciones a la f\'ormula demostrada
-\begin{gather}
-  \sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q = 2x\ln x + O(x) \\
-  \sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x = O(x) \\
+\[
   \frac{\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x}{x} = O(1).
-\end{gather}
+\]
 
-Por definici\'on, esto significa que existe un momento \(n_0 > 0\)
-y una constante \(c > 0\) a partir del cual
-\begin{align*}
-  \abs{\frac{\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x}{x}} \leq c
-\end{align*}
+Por definici\'on, esto significa que existe
+un momento \(n_0 > 0\)
+y una constante \(c > 0\)
+tales que
+\[
+  K(x)
+  = \abs{\frac{\sum_{p \leq x} \ln^2 p
+  + \sum_{pq \leq x} \ln p \ln q
+  - 2x\ln x}{x}}
+  \leq c
+\]
 para todo \(x \geq n_0\).
+Convenientemente hemos definido \(K\)
+para poder estimar asint\'oticamente la identidad de Selberg.
 
-Asumamos que tenemos un n\'umero \(x\) y queremos calcular
-\begin{align*}
-  \abs{\frac{\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x}{x}}.
-\end{align*}
+Ahora presentaremos como computar \(K\).
 
-La estrategia que utilizaremos consiste en lo siguiente:
-Primero precalcularemos los n\'umeros primos
-en el rango \(\brackets{1 \dots x}\).
-Como solamente manipularemos logaritmos de n\'umeros primos,
-aprovechar\'e de esto para poder precalcular las sumatorias y
-hallar sumas en rangos en \(O(1)\) como diferencia de sumas.
-El contenedor \(\log\) almacenar\'a lo siguiente:
-\[
-  \log[p] =
-  \begin{cases}
-    \ln p &\quad\text{si } p \text{ es primo,}\\
-    0 &\quad\text{en otro caso.}
-  \end{cases}
-\]
-
-As\'i, \(\sum_{i = l}^r \log[i]\)
-solo tendr\'a la sumatoria de los logaritmos naturales de
-los n\'umeros primos en el intervalo \(\brackets{l, r}\).
-
-El contenedor es\_primo almacenar\'a lo siguiente:
-\[
-  \text{es\_primo[$p$]} =
-  \begin{cases}
-    \text{verdadero} &\quad\text{si }$p$\text{ es primo,}\\
-    \text{falso} &\quad\text{en otro caso.}
-  \end{cases}
-\]
-
-Los contenedores suma\_\(\log\) y suma\_\(\log^2\) almacenar\'an
-\[
-  \text{suma\_\(\log[x]\)} = \sum_{i = 0}^x \log[i]
-\]
-y
-\[
-  \text{suma\_\(\log^2[x]\)} = \sum_{i = 0}^x \log^2[i].
-\]
-
-El primer preprocesamiento que realizaremos ser\'a llamar al m\'etodo CribaLineal.
-Este m\'etodo reibir\'a como par\'ametro al n\'umero n. 
+Primero precomputaremos los n\'umeros primos en el rango de inter\'es
+para poder utilizarlos en ambas sumatorias.
 
 \begin{algorithm}[H]
-\SetAlgoLined
-\DontPrintSemicolon
-\KwData{es\_primo, primos, $n$.}
-\KwResult{N\'umeros primos en el rango $[1 \dots n]$ guardados en primos.}
-\Begin{
-    es\_primo[$0$] $\leftarrow$ falso\;
-    es\_primo[$1$] $\leftarrow$ falso\;
-    \For{$i \leftarrow 2$ \KwTo $n$} {
-        es\_primo[$i$] $\leftarrow$ verdadero\;
-    }
-    primos $\leftarrow$ $\emptyset$\;
-    \For{$i \leftarrow 2$ \KwTo $n$} {
-        \If{es\_primo[$i$]} {
-            primos $\leftarrow$ primos $\cup\;\{i\}$\;
-        }
-        \For{$p \in$ primos \textbf{and} $i \cdot p \leq n$}{
-            es\_primo[$i \cdot p$] $\leftarrow$ falso\;
-            \If{$i \equiv 0 \mod{p}$}{
-                \textbf{break}\;
+    \SetAlgoLined
+    \DontPrintSemicolon
+    \Fn{\ObtenerPrimos{\(x\)}} {
+        Sea \(M\brackets{0 \dots x}\) un nuevo arreglo est\'atico\;
+        Inicializamos \(M\brackets{2 \dots x}\) con \textsc{Verdadero}\;
+        \(M\brackets{0} = M\brackets{1} = \) \textsc{Falso}\;
+        Sea \(P\) un nuevo arreglo din\'amico\;
+        \For {\(n = 2\) \KwTo \(x\)} {
+            \If {\(M\brackets{n}\)} {
+                \textsc{Insert}\(\parentheses{P, n}\)\;
+            }
+            \For {\(p \in P\) and \(np \leq x\)} {
+                \(M[np]\) = \textsc{Falso}\;
+                \If {\(p \, \mid \, n\)} {
+                    \textbf{break}\;
+                }
             }
         }
+        \KwRet{\(P\)}
     }
-}
-\caption{CribaLineal\label{CL}}
+    \caption{Retorna un arreglo din\'amico con todos los n\'umeros primos menores o iguales a \(x\).}
 \end{algorithm}
 
 \begin{lemma}
-Sea $n$ el n\'umero que representa el extremo derecho del intervalo $[1 \dots n]$
-en el cual queremos hallar todos los n\'umeros primos mediante la ejecuci\'on de CribaLineal. Luego el tiempo de ejecuci\'on es $O(n)$.
+    \label{lem:sieve-correctness}
+    El algoritmo \texttt{ObtenerPrimos}
+    computa correctamente los n\'umeros primos
+    menores o iguales a \(x\).
 \end{lemma}
 
 \begin{proof}
+    Definamos el arreglo est\'atico
+    \(M\brackets{0 \dots x}\) en la l\'inea \(2\)
+    donde \(M[i]\) denota si \(i\) es un n\'umero primo
+    y el arreglo din\'amico \(P\) en la l\'inea \(5\)
+    el cual contendr\'a todos los n\'umeros primos buscados.
+    La l\'inea \(4\) inicializa \(M[0]\) y \(M[1]\) en \textsc{Falso}
+    y el resto es inicializado como \textsc{Verdadero} en la l\'inea \(3\).
+    Sea \(n\) el n\'umero que estamos analizando en las l\'ineas \(6-16\).
+    Supongamos que \(n\) es un n\'umero primo.
+    Luego, las l\'ineas \(7-9\) siempre insertar\'an
+    a \(n\) en \(P\) puesto que la \'unica manera que \(M[n]\) sea \textsc{Falso}
+    es que alg\'un primo \(p \in P\) lo haya etiquetado de esta manera
+    en la l\'inea \(11\), lo cual es imposible pues \(n < pn\).
+    Por el teorema fundamental de la aritm\'etica
+    podemos expresar de manera \'unica
+    cualquier n\'umero natural mayor que \(1\) como
+    producto de potencias de n\'umeros primos.
+    Sin p\'erdida de generalidad, expresemos
+    \(n = p_1^{\alpha_1} \dots p_k^{\alpha_k}\)
+    con los factores primos \(p_1 \leq \dots \leq p_k\) ordenados crecientemente.
+    Ahora supongamos que \(n\) es compuesto y escribamos
+    \(n = p_1 m\) con \(m = p_1^{\alpha_1 - 1} \dots p_k^{\alpha_k}\).
+    Afirmamos que \(M[n]\) es \textsc{Falso} al llegar a la l\'inea \(7\)
+    y, por ende, no es insertado en \(P\).
+    Necesariamente \(1 < m < n\) pues \(n\) es compuesto.
+    Como \(p_1\) es menor o igual que
+    todos los primos que dividen a \(m\),
+    la l\'inea \(11\) asigna a \(M[m p_1]\)
+    el valor \textsc{Falso}
+    cuando el bucle de las l\'ineas \(6-16\)
+    est\'a analizando a \(m\).
 \end{proof}
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\DontPrintSemicolon
-\KwData{$i, x,$ primos}
-\KwResult{Posici\'on del mayor n\'umero primo $q$ tal que $pq \leq x$.
-En caso no exista, se retornar\'a $-1$.}
-\Begin{
-    $p \leftarrow$ primos[$i$]\;
-    $l \leftarrow i$\;
-    $r \leftarrow |$primos$| - 1$\;
-    \If{$p \cdot primos[r] \leq x$}{
-        \textbf{return} r\;
-    }
-    \If{$p^2 > x$}{
-        \textbf{return} $-1$\;
-    }
-    \While{$r - l > 1$}{
-        $m \leftarrow \floor*{\frac{l + r}{2}}$\;
-        \eIf{$p \cdot primos[m] \leq x$} {
-            $l \leftarrow m$\;
-        } {
-            $r \leftarrow m$\;
-        }
-    }
-    \textbf{return} $l$\;
-}
-\caption{Buscar\'UltimaPosici\'on\label{BUP}}
-\end{algorithm}
 
 \begin{lemma}
-Sea $i$ el \'indice que representa al $i$-\'esimo n\'umero primo
-y $p$ este $i$-\'esimo n\'umero primo.
-Sea $x$ el n\'umero que representa la cota superior para el producto de $p$ con otro n\'umero primo $q$ tal que $pq \leq x$ y $q \geq p$.
-Obtendremos la posici\'on del mayor n\'umero primo $q$ que cumpla con lo anterior o
-$-1$ en caso este n\'umero primo no exista
-mediante la ejecuci\'on de Buscar\'UltimaPosici\'on.
-Luego el tiempo de ejecuci\'on es $O(\log_2 n)$.
+    \label{lem:sieve-time}
+    El tiempo de ejecuci\'on del algoritmo \texttt{ObtenerPrimos}
+    para computar los n\'umeros primos menores o iguales a \(x\) es \(O(x)\).
 \end{lemma}
 
 \begin{proof}
-Obtener el valor del $i$-\'esimo n\'umero primo e inicializar
-nuestros extremos de los intervalos para realizar la b\'usqueda binaria en las l\'ineas
-$2 - 4$ toma $O(1)$ en tiempo.
-Nuestro objetivo es encontrar la \'ultima posici\'on $j$ en la cual
-el $j$-\'esimo n\'umero primo multiplicado por $p$ sea menor o igual a $x$ con $i \leq j$. Antes de analizar la invariante, quit\'emonos de encima los casos borde.
-El primer caso borde es en el cual el menor elemento en nuestro rango no cumple la condici\'on,
-en este caso retornamos $-1$, pues para todo $q > p$ tenemos que $pq > p^2 > x$,
-por lo que no existir\'a par que satisfaga la condici\'on.
-El segundo caso borde es cuando el n\'umero de la \'ultima posici\'on cumple.
-En este caso retornamos de inmediato esta \'ultima posici\'on,
-pues para cualquier $q < p_r$ tenemos $pq < p \cdot p_r \leq x$,
-por lo cual todos los dem\'as primos en el rango tambi\'en cumplir\'ian.
-Analizar ambos casos nos tomar\'ia $O(1)$ en tiempo.
-Al entrar al bucle en las l\'ineas $11 - 18$ se satisface $i = l < r = \pi(x) - 1$ y adem\'as
-$p\;\cdot$ primos[$l$] $\leq x$ y $p\;\cdot$ primos[$r$] $> x$.
-Mientras que $l$ y $r$ disten al menos 2, computaremos $m = \floor*{\frac{l + r}{2}}$
-y podemos distinguir dos casos:
-el primer caso es cuando se cumple $p\;\cdot$ primos[$m$] $\leq x$, $l$ cambiar\'ia
-su valor a $m$ y, debido a que la diferencia entre $l$ y $r$ era mayor a 1, entonces
-$l' = m < r$ y la condici\'on $p\;\cdot$ primos[$l'$] $\leq x$ y $p\;\cdot$ primos[$r$] $> x$ se sigue cumpliendo.
-En el segundo caso tenemos $p\;\cdot$ primos[$m$] $> x$, aqu\'i $r' = m$ y cuando $r' > l$ la condici\'on se cumple de manera an\'aloga al caso anterior,
-pero cuando $r' = l$, tenemos que en la siguiente iteraci\'on del bucle, al ya no distar $2$, saldr\'iamos del bucle
-y necesariamente la respuesta se encuentra en nuestro extremo izquierdo $l$.
-Ahora que ya sabemos que siempre terminamos obteniendo el \'ultimo elemento que cumple la condici\'on, analicemos el
-orden de complejidad de este algoritmo. Sea $T: \BN \to \BN$ la funci\'on que cuenta la cantidad de operaciones
-que realiza el bucle con $T(n) = 4 + T(\ceiling{\frac{n}{2}})$,
-puesto que en el peor de los casos nos quedamos con la mitad m\'as grande;
-no obstante, esto lo podemos expresar como $T(n) = O(1) + T(\frac{n}{2})$ seg\'un \cite{CLRS}
-y utilizando inducci\'on sobre esta \'ultima conseguimos $T(n) = O(\log_2 n)$.
-En el peor de los casos, $n = \pi(x)$, por lo que la complejidad total del algoritmo ser\'ia
-$O(\log_2 \pi(x))$, el cual es a su vez $O(\log_2 x)$ por definici\'on.
+    En la prueba del \cref{lem:sieve-correctness} observamos que
+    cada n\'umero compuesto es etiquetado como \textsc{Falso}
+    una \'unica vez puesto que determin\'isticamente sabemos qu\'e primo
+    y qu\'e n\'umero su producto hizo que cambie el valor de \(M\) en dicho compuesto.
+    En la l\'inea \(12\) nos aseguramos de que los m\'ultiplos a analizar
+    sean originados por el menor primo que divide a este n\'umero compuesto,
+    pues ni bien deje de serlo,
+    la l\'inea \(13\) evita
+    que sigamos analizando m\'as m\'ultiplos innecesariamente.
 \end{proof}
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\DontPrintSemicolon
-\KwData{primos, suma\_log, $x$.}
-\KwResult{$\sum_{pq \leq x} \ln p \ln q$.}
-\Begin{
-    $suma \leftarrow 0$\;
-    \For{$pos_p \leftarrow 0$ \KwTo $|$primos$| - 1$}{
-        $pos_q \leftarrow$ Buscar\'UltimaPosici\'on($pos_p$, $x$)\;
-        \If{$pos_q = -1$}{
-            \textbf{break}\;
-        }
-        $p \leftarrow$ primos$[pos_p]$\;
-        $q \leftarrow$ primos$[pos_q]$\;
-        $suma \leftarrow suma + \ln p \cdot ($suma\_log$[q] - $suma\_log$[p - 1])$\;
-    }
-    \textbf{return} $suma$\;
-}
-\caption{CalcularSuma\label{CS}}
-\end{algorithm}
-
-\begin{lemma}
-Sea $x$ el n\'umero que representa la cota superior para el producto de dos n\'umeros primos
-$p$ y $q$ en $\sum_{pq \leq x} \ln p \ln q$.
-Si obtenemos el valor de esta sumatoria mediante la ejecuci\'on de CalcularSuma, 
-el tiempo de ejecuci\'on es $O(x)$.
-\end{lemma}
-
-\begin{proof}
-Tenemos los n\'umeros primos en el rango $[1 \dots x]$ en el contenedor ordenado $primos$,
-entonces por definici\'on $\pi(x)=|primos| $.
-Inicializar la suma en la l\'inea $2$ toma $O(1)$ en tiempo.
-El bucle en las l\'ineas $3-11$ ser\'a ejecutado $O(\pi(x))$ veces.
-La funci\'on Buscar\'UltimaPosici\'on en la l\'inea $4$ es llamada exactamente una vez para cada primo $p \in primos$ y
-toma $O(\log_2 x)$ en tiempo de acuerdo con el lema 17, 
-las dem\'as operaciones dentro del bucle toman $O(1)$ en tiempo.
-De esta manera, el tiempo de ejecuci\'on del algoritmo es $O(\pi(x)\log_2 x)$.
-Asimismo, Rosser y Barkley \cite[teorema 2 y corolario 1]{Chebyshev} probaron lo siguiente:
-\begin{align}
-\pi(x) \leq 1.25506\;\frac{x}{\ln x}. %%%%\;x > 1.
-\end{align}
-Utilizamos esto para tener un mejor estimado cual 
-\begin{align}
-    \pi(x)\log_2 x &\leq 1.25506\;\frac{x}{\ln x} \log_2 x\\
-    &= 1.25506\;\log_2 e \frac{x}{\log_2 e \cdot \log_e x} \log_2 x\\
-    &= 1.25506\;\log_2 e \frac{x}{\log_2 x} \log_2 x\\
-    &= (1.25506\;\log_2 e) x\\
-\end{align}
-y concluimos que el tiempo de ejecuci\'on del algoritmo es $O(x)$.
-\end{proof}
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\DontPrintSemicolon
-\KwData{$x.$}
-\KwResult{$\left|\frac{\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x}{x}\right|.$}
-\Begin{
-    CribaLineal($x$)\;
-    \For{$i \leftarrow 1$ \KwTo $x$}{
-        suma\_log$[i] \leftarrow 0$\;
-        suma\_$\log^2[i] \leftarrow 0$\;
-        \eIf{$es\_primo[i]$}{
-            $\log[i] \leftarrow \ln i$\;
-        }{
-            $\log[i] \leftarrow 0$\;
-        }
-    }
-    \For{$i \leftarrow 2$ \KwTo $x$}{
-        suma\_log[$i] \leftarrow$ suma\_$\log[i - 1] + \log[i]$\;
-        suma\_$\log^2[i] \leftarrow$ suma\_$\log^2[i - 1] + (\log[i])^2$\;
-    }
-    \textbf{return} $\frac{|\text{suma}\_\log^2[x] + \text{CalcularSuma}(x) - 2x\ln x|}{x}$\;
-}
-\caption{EstimarConstante}
-\end{algorithm}
 
 \begin{theorem}
-Con $x$ el n\'umero natural para el cual se quiere determinar
-$$\frac{|\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x|}{x}$$
-mediante la ejecuci\'on de EstimarConstante
-resulta que el tiempo de ejecuci\'on es $O(x)$.
+    \label{thm:sieve}
+    Sea \(x\) un n\'umero entero positivo.
+    El algoritmo \texttt{ObtenerPrimos}
+    computa correctamente los n\'umeros primos
+    menores o iguales a \(x\) en tiempo y espacio \(O(x)\).
 \end{theorem}
 
 \begin{proof}
+    Inmediato del \cref{lem:sieve-correctness} y el \cref{lem:sieve-time}.
+\end{proof}
+
+Vamos preparando el clima para computar \(\sum_{pq \leq x} \ln p \ln q\).
+Si fijamos \(p\) y conocemos todos los primos menores o iguales a \(x\),
+me gustar\'ia saber qu\'e primos \(q\) mayores o iguales a \(p\) aportan a esta sumatoria.
+El siguiente algoritmo nos permitir\'a obtener la menor cota superior
+para este subconjunto.
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \DontPrintSemicolon
+    \Fn{\ObtenerMaximoPrimo{\(p, x, P\)}} {
+        \(l = 0\)\;
+        \(r = P.\,length - 1\)\;
+        \If {\(p \cdot P\brackets{r} \leq x\)} {
+            \KwRet{\(P\brackets{r}\)}
+        }
+        \If {\(p^2 > x\)} {
+            \KwRet{\(-1\)}
+        }
+        \While {\(r - l > 1\)} {
+            \(m = \floor{\parentheses{l + r} / 2}\)\;
+            \eIf {\(p \cdot P\brackets{m} \leq x\)} {
+                \(l = m\)\;
+            }
+            {
+                \(r = m\)\;
+            }
+        }
+        \KwRet{\(P\brackets{l}\)}
+    }
+    \caption{Retorna el m\'aximo primo \(q\) mayor o igual a \(p\) tal que \(pq \leq x\).}
+\end{algorithm}
+
+\begin{theorem}
+    \label{thm:binary-search}
+    Sea \(x\) un n\'umero entero positivo,
+    \(p\) un n\'umero primo menor o igual a \(x\) y
+    \(P\) un arreglo din\'amico con los n\'umeros primos menores o iguales a \(x\) ordenados crecientemente.
+    El algoritmo \texttt{ObtenerM\'aximoPrimo}
+    obtiene el m\'aximo primo \(q\)
+    mayor o igual a \(p\) tal que
+    \(pq \leq x\)
+    o \(-1\) en caso no exista
+    en tiempo \(O(\log_2 \pi(x))\).
+\end{theorem}
+
+\begin{proof}
+    Una precondici\'on para la l\'inea \(4\) es que
+    \(P[l]\) y \(P[r]\) son el menor y mayor n\'umero primo
+    menores o iguales a \(x\), respectivamente.
+    En las l\'ineas \(4-6\), si \(p\) multiplicado por el mayor n\'umero primo menor o igual a \(x\)
+    sigue siendo menor o igual a \(x\), este ser\'ia el primo buscado.
+    Por otro lado, si \(p^2 > x\) tenemos que \(pq \geq p^2 > x\) para \(q \geq p\)
+    por lo que no existir\'ia soluci\'on.
+    As\'i, las l\'ineas \(7-9\) se aseguran de retornar \(-1\) frente a esta situaci\'on.
+    Caso contrario, notamos que si \(p \cdot P[i] \leq x\)
+    entonces \(p \cdot P[i - 1] \leq x\) para \(i > 0\).
+    Luego construimos la invariante \(p \cdot P[l] \leq x\) y \(p \cdot P[r] > x\)
+    y la preservamos a lo largo del bucle de las l\'ineas \(10-17\),
+    el cual se detiene cuando \(l\) y \(r\) son consecutivos.
+    Como \(P\) tiene \(\pi(x)\) elementos y en cada paso
+    reducimos el espacio de b\'usqueda de \(r - l + 1\) elementos
+    a \(\floor{(r - l + 1) / 2} + O(1)\) elementos,
+    la complejidad en tiempo ser\'a \(O(\log_2 \pi(x))\).
+\end{proof}
+
+Supongamos que tenemos un arreglo \(L[0 \dots x]\) donde
+\(L[n] = \sum_{p \leq n} \ln p\).
+Luego podemos calcular \(\sum_{l \leq p \leq r} \ln p = L[r] - L[l - 1]\) para \(l \geq 1\)
+en \(O(1)\).
+La meta del siguiente algoritmo es computar \(L[0 \dots x]\)
+y de pasada a \(\sum_{p \leq x} \ln^2 p\).
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \DontPrintSemicolon
+    \Fn{\SumarUno{\(x, P\)}} {
+        Sea \(L\brackets{0 \dots x}\) un nuevos arreglo est\'atico\;
+        \(L\brackets{0} = 0\)\;
+        \(s = 0\)\;
+        \(i = 0\)\;
+        \For {\(n = 1\) \KwTo \(x\)} {
+            \(L\brackets{n} = L\brackets{n - 1}\)\;
+            \If {\(i < P.\,length\) and \(P\brackets{i} == n\)} {
+                \(L\brackets{n} = L\brackets{n} + \ln n\)\;
+                \(s = s + \ln^2 n\)\;
+                \(i = i + 1\)\;
+            }
+        }
+        \KwRet{\(s\) y \(L\)}
+    }
+    \caption{Retorna \(\sum_{p \leq x} \ln^2 p\) y las sumas parciales de \(\sum_{p \leq x} \ln p\).}
+\end{algorithm}
+
+\begin{theorem}
+    \label{thm:sum-1}
+    Sea \(x\) un n\'umero entero positivo y
+    \(P\) un arreglo din\'amico con los n\'umeros primos menores o iguales a \(x\) ordenados crecientemente.
+    El algoritmo \texttt{Sumar\textsubscript{1}} computa \(\sum_{p \leq x} \ln^2 p\) y \(L[0 \dots x]\)
+    en tiempo \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    Trivialmente el tiempo de ejecuci\'on del algoritmo es \(O(x)\) pues
+    cada iteraci\'on del bucle en las l\'ineas \(6-13\) toma \(O(1)\).
+    Adem\'as, es t\'acito que el aporte de \(\ln^2 n\) a \(s\) y de \(\ln n\) a \(L[n]\)
+    se da cuando \(n\) es primo.
+\end{proof}
+
+Ya hemos preparado el clima
+y dispuesto los tecnicismos necesarios para
+computar el plato de fondo.
+Sea \(x\) un n\'umero entero positivo, expresamos
+\[
+    \sum_{pq \leq x} \ln p \ln q
+    = \sum_{p \leq x} \sum_{p \leq q \leq r} \ln p \ln q
+    = \sum_{p \leq x} \ln p \sum_{p \leq q \leq r} \ln q
+    = \sum_{p \leq x} \ln p \cdot \parentheses{L[r] - L[p - 1]}
+\]
+donde \(r\) es el m\'aximo primo mayor o igual a \(p\) tal que \(pr \leq x\).
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \DontPrintSemicolon
+    \Fn{\SumarDos{\(x, L, P\)}} {
+        \(s = 0\)\;
+        \For {\(p \in P\)} {
+            \(r =\,\)\texttt{ObtenerM\'aximoPrimo}\(\parentheses{p, x, P}\)\;
+            \If {\(r == -1\)} {
+                \textbf{break}\;
+            }
+            \(s = s + \ln p \cdot \parentheses{L\brackets{r} - L\brackets{p - 1}}\)\;
+        }
+        \KwRet{\(s\)}
+    }
+    \caption{Retorna \(\sum_{pq \leq x} \ln p \ln q\).}
+\end{algorithm}
+
+\begin{theorem}
+    \label{thm:sum-2}
+    Sea \(x\) un n\'umero entero positivo,
+    \(P\) un arreglo din\'amico con los n\'umeros primos menores o iguales a \(x\) ordenados crecientemente y
+    \(L[0 \dots x]\) un arreglo en donde \(L[n] = \sum_{p \leq n} \ln p\).
+    El algoritmo \texttt{Sumar}\textsubscript{2} computa \(\sum_{pq \leq x} \ln p \ln q\) en \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    El bucle de las l\'ineas \(3-9\) realizar\'a a lo m\'as \(\pi(x)\) iteraciones.
+    En cada iteraci\'on, la l\'inea \(4\) toma \(O(\log_2\pi(x))\) en tiempo
+    y el resto de l\'ineas toma \(O(1)\) por lo que el tiempo de ejecuci\'on ser\'ia
+    \(O\parentheses{\pi(x) \log_2\pi(x)}\).
+    Rosser y Schoenfeld \cite[corolario 1]{Rosser1962} probaron que
+    \(\pi(x) < cx / \ln x\) para \(x > 1\) y \(c = 1.25506\).
+    Tras un mero manejo simb\'olico
+    \begin{align*}
+        \pi(x) \log_2 \pi(x) &\leq \frac{cx}{\ln x} \log_2 \frac{cx}{\ln x} \\
+        &= \frac{cx}{\ln x} \parentheses{\log_2 c + \log_2 x - \log_2 \ln x} \\
+        &= \parentheses{c \log_2 c}\frac{x}{\ln x} + \parentheses{c \log_2 e}x - c\parentheses{\frac{x \log_2 \ln x}{\ln x}} \\
+        &= O(x)
+    \end{align*}
+    nuestra labor es recompensada inmediatamente.
+\end{proof}
+
+El siguiente algoritmo en cierto sentido resume nuestro trabajo hasta el momento.
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \DontPrintSemicolon
+    \Fn{\K{\(x\)}} {
+        \(P = \,\)\texttt{ObtenerPrimos}\((x)\)\;
+        \(s \, , L = \,\)\texttt{Sumar}\(_1(x, P)\)\;
+        \(t = \,\)\texttt{Sumar}\(_2(x, L, P)\)\;
+        \KwRet{\(\abs{s + t - 2 x \ln x}/x\)}
+    }
+    \caption{Computa \(K(x)\).}
+\end{algorithm}
+
+\begin{theorem}
+    Sea \(x\) un n\'umero entero positivo.
+    El algoritmo \texttt{K} computa \(K(x)\) en \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    Esto es fruto de el \cref{thm:sieve}, el \cref{thm:sum-1} y el \cref{thm:sum-2}.
 \end{proof}
 
 \section{Estimados}
 
-Sea $t$ la cantidad de casos de prueba y $n$ el m\'aximo valor que puede tomar $x$ en la expresi\'on que analizaremos. 
-El siguiente programa en C++ determina el valor de 
-$$\frac{|\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x|}{x}$$
-para cada caso de prueba.
-En particular, usaremos $t = 28$ y $n = 3 \cdot 10^7$.
-La complejidad asint\'otica en tiempo del programa es $O(tn)$, la cual se ve reflejada en un tiempo de ejecuci\'on
-de tan solo tres segundos.
+Realizamos nuestros experimentos en una
+MacBook Pro \(15-\)inch \(2017\)
+corriendo macOS Ventura \(13.4\)
+con \(16\)GB de RAM y
+un CPU Quad-Core Intel Core i7
+con m\'axima frecuencia de reloj de \(2.9\)GHz.
+El procesador contiene \(4\) n\'ucleos
+y cada n\'ucleo puede aprovechar \(2\) hilos
+con hyper-threading technology habilitada.
+Usamos el lenguaje de programaci\'on C++ para implementar nuestros algoritmos,
+utilizando el est\'andar C++17.
+Los n\'umeros de \(64\) bits fueron emulados usando los tipos de datos
+\texttt{long long} y \texttt{long double} del compilador
+Apple clang version 14.0.3 (clang-1403.0.22.14.1).
 
-\begin{center}
-    \texttt{real	0m3,123s}\\
-    \texttt{user	0m2,675s}\\
-    \texttt{sys	0m0,436s}.
-\end{center}
-
-% \cppfile{formula_selberg.cpp}
-
-\begin{table}
-\centering
-\caption{Resultado del programa en cada uno de los 28 casos de prueba.}
-\begin{tabular}{@{} l *{5}{S[table-format=-1.7]} @{}} 
-\toprule
-{$x$} & 
-{$\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x$} & 
-{$\frac{|\sum_{p \leq x} \ln^2 p + \sum_{pq \leq x} \ln p \ln q - 2x\ln x|}{x}$}\\ % center-set header entries
-\midrule
-10 & -34.4229638465 & 3.4422963847\\
-100 & -519.2686545658 & 5.1926865457\\
-1000 & -6317.3110617078 & 6.3173110617\\
-10000 & -74463.8721010727 & 7.4463872101\\
-100000 & -859318.2559356594 & 8.5931825594\\
-1000000 & -9747133.5703212193 & 9.7471335703\\
-1500000 & -14918429.3651946987 & 9.9456195768\\
-2000000 & -20177763.7803012519 & 10.0888818902\\
-2500000 & -25505439.7770474999 & 10.2021759108\\
-3000000 & -30875441.5873458827 & 10.2918138624\\
-3500000 & -36291518.9878187147 & 10.3690054251\\
-4000000 & -41746678.7374733434 & 10.4366696844\\
-4500000 & -47221448.8244719136 & 10.4936552943\\
-5000000 & -52725446.2863963772 & 10.5450892573\\
-5500000 & -58263339.7575164592 & 10.5933345014\\
-6000000 & -63830467.8915757891 & 10.6384113153\\
-6500000 & -69414402.9962517989 & 10.6791389225\\
-7000000 & -74998328.6200477667 & 10.7140469457\\
-7500000 & -80619769.8168214446 & 10.7493026422\\
-8000000 & -86252298.0080809856 & 10.7815372510\\
-8500000 & -91907189.6865512790 & 10.8126105514\\
-9000000 & -97554179.0078311940 & 10.8393532231\\
-9500000 & -103244044.9516971762 & 10.8677942054\\
-10000000 & -108942869.8283277971 & 10.8942869828\\
-15000000 & -166436611.9307800680 & 11.0957741287\\
-20000000 & -224778414.1259130784 & 11.2389207063\\
-25000000 & -283766370.6499844969 & 11.3506548260\\
-30000000 & -343248619.2823745428 & 11.4416206427\\
-\bottomrule
-\end{tabular}
+\begin{table}[htbp]
+    \centering
+    \caption{Resultados y tiempos de computaci\'on en la MacBook Pro.}
+    \begin{tabular}{cccc}
+      \toprule
+      \textbf{\(x\)} & \textbf{\(K(x)\)} & \textbf{Tiempo de computaci\'on (ms)} \\
+      \midrule
+      \(10^1\) & 3.4422963847 & 0 \\
+      \(10^2\) & 5.1926865457 & 0 \\
+      \(10^3\) & 6.3173110617 & 0 \\
+      \(10^4\) & 7.4463872101 & 2 \\
+      \(10^5\) & 8.5931825594 & 18 \\
+      \(10^6\) & 9.7471335703 & 156 \\
+      \(10^7\) & 10.8942869828 & 1406 \\
+      \(10^8\) & 12.0436377380 & 16150 \\
+      \(10^9\) & 13.1943961187 & 201913 \\
+      \bottomrule
+    \end{tabular}
 \end{table}
+
+El c\'odigo fuente para replicar los resultados est\'a disponible en GitHub en
+\goto{https://github.com/ManuelLoaizaVasquez/selberg-identity/tree/main/code/}.

@@ -48,3 +48,166 @@ como en la presentaci\'on original de Selberg.
     \]
     y el resultado se desprende de manera inmediata.
 \end{proof}
+
+\begin{lemma}
+    \label{lem:1-2ln2x-o-lnx}
+    Para todo \(x \geq 1\) tenemos
+    \[
+        \sum_{pq \leq x} \frac{\ln p \ln q}{pq}
+        = \frac{1}{2} \ln^2 x + O\parentheses{\ln x}.    
+    \]
+\end{lemma}
+
+\begin{proof}
+    Aplicamos \cite[teorema 2]{Mertens1874} en la siguiente sumatoria
+    \[
+        \sum_{q \leq x/p} \frac{\ln q}{q} = \ln x - \ln p + O(1)
+    \]
+    y acumulamos
+    \begin{align*}
+        \sum_{p \leq x} \frac{\ln p}{p}
+        \parentheses{\sum_{q \leq x / p} \frac{\ln q}{q}}
+        &= \sum_{p \leq x} \frac{\ln p}{p} \parentheses{\ln x - \ln p + O(1)} \\
+        &= \ln x \sum_{p \leq x} \frac{\ln p}{p} - \sum_{p \leq x} \frac{\ln^2 p}{p} + O\parentheses{\sum_{p \leq x}\frac{\ln p}{p}} \\
+        &= \ln x \parentheses{\ln x + O(1)} - \parentheses{} + O(\ln x) + O(1) \\
+        &= \frac{1}{2} \ln^2 x + O(\ln x).
+    \end{align*}
+\end{proof}
+
+\begin{lemma}
+    \label{lem:lnp-lnq-pq-lnpq}
+    Para todo \(x \geq 1\) tenemos
+    \[
+        \sum_{pq \leq x} \frac{\ln p \ln q}{pq \ln pq}
+        = \ln x + O(\ln \ln x).   
+    \]
+\end{lemma}
+
+\begin{proof}
+    Definamos \(f: [2, \infty) \to \BR\) con \(f(x) = 1/\ln x\) y
+    \(a: \BN \to \BR\) con \(a(n) = \sum_{pq = n} (\ln p \ln q) / pq\).
+    Luego aplicamos el \cref{thm:abel}
+    y reemplazamos el estimado del \cref{lem:1-2ln2x-o-lnx} para obtener
+    \begin{align*}
+        \sum_{2 < pq \leq x} \frac{\ln p \ln q}{pq} \cdot \frac{1}{\ln pq}
+        &= \sum_{pq \leq x} \frac{\ln p \ln q}{pq} \cdot \frac{1}{\ln x}
+        - \int_2^x \parentheses{\sum_{pq \leq t} \frac{\ln p \ln q}{pq}}
+        \parentheses{-\frac{1}{t \ln^2 t}} \, dt \\
+        &= \parentheses{\frac{1}{2} \ln^2x + O(\ln x)} \frac{1}{\ln x}
+        + \int_2^x \parentheses{\frac{\ln^2 t}{2} + O(\ln t)}\parentheses{\frac{1}{t \ln^2 t}} \, dt \\
+        &= \frac{1}{2}\ln x + O(1) + \int_{2}^x \frac{1}{2t} \, dt + O\parentheses{\int_2^x \frac{1}{t \ln t} \, dt} \\
+        &= \frac{1}{2}\ln x + O(1) + \frac{1}{2}\parentheses{\ln x - \ln 2} + O\parentheses{\ln \ln x - \ln \ln 2} \\
+        &= \ln x + O(\ln \ln x)
+    \end{align*}
+    validando la afirmaci\'on.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:rlnx2}
+    Para todo \(x \geq 1\) tenemos
+    \[
+        R(x)\ln x
+        = \sum_{pq \leq x} \frac{\ln p \ln q}{\ln pq}
+        R\parentheses{\frac{x}{pq}} + O\parentheses{x \ln\ln x}.   
+    \]
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+\begin{lemma}
+    Para todo \(x \geq 1\) tenemos
+    \[
+        \abs{R(x)}
+        \leq \frac{1}{\ln x} \sum_{n \leq x} \abs{R\parentheses{\frac{x}{n}}}
+        + O\parentheses{\frac{x\ln \ln x}{\ln x}}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Sumamos las expresiones obtenidas en \cref{lem:rlnx1} y \cref{lem:rlnx2}
+\end{proof}
+
+\begin{lemma}
+    Para todo \(x \geq 1\) tenemos
+    \[
+        \sum_{n \leq x} \frac{R(n)}{n^2} = O(1).    
+    \]
+\end{lemma}
+
+\begin{proof}
+    TODO.
+    Sumas parciales de \cite[teorema 2]{Mertens1874} en
+    \[
+        \sum_{n \leq x} \frac{\vartheta(n)}{n^2} = \ln x + O(1).
+    \]
+\end{proof}
+
+\begin{lemma}
+    Existe \(K_1 > 0\) tal que para \(x' > x > 4\) tenemos
+    \[
+        \abs{\sum_{x \leq n \leq x'} \frac{R(n)}{n^2}} < K_1.
+    \]
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+\begin{lemma}
+    Para \(x' > x > 4\) existen \(y \in \brackets{x, x'}\)
+    y \(K_2 \geq 1\) tales que
+    \[
+        \abs{\frac{R(y)}{y}} < \frac{K_2}{\ln(x'/x)}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+\begin{lemma}
+    Para \(\delta < 1\) y \(x > 4\) existe
+    \(y \in \brackets{x, e^{K_2 / \delta} x}\) tal que
+    \(\abs{R(y)} < \delta y\).
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+\begin{lemma}
+    Para \(y' > y > 4\) tal que \(y/2 \leq y' \leq 2y\) tenemos
+    \[
+        \abs{R(y')} \leq \abs{R(y)} + \abs{y' - y} + O\parentheses{\frac{y'}{\ln y'}}.    
+    \]
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+\begin{lemma}
+    Existe \(y \in \parentheses{x, e^{K_2/\delta}x}\) tal que
+    para todo \(y' \in \brackets{y/2, 2y}\) con
+    \(\delta < 1\) y \(x > 4\) tenemos
+    \[
+        \abs{\frac{R(y')}{y'}} < 2\delta + \abs{1 + \frac{y'}{y}} + \frac{K_3}{\ln x}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+\begin{lemma}
+    Para \(\delta < 1\), \(x > 4\) y \(x > e^{K_3/\delta}\),
+    el intervalo \(\parentheses{x, e^{K_2/\delta}x}\) siempre contendr\'a
+    un subintervalo \(\parentheses{y, e^{\delta/2}y}\) tal que
+    \(\abs{R(z)} < 4 \delta z\) para todo \(z\) en dicho subintervalo.
+\end{lemma}
+
+\begin{proof}
+    TODO.
+\end{proof}
