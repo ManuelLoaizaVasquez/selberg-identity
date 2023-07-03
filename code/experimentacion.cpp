@@ -47,12 +47,9 @@ std::tuple<long double, std::vector<long double>> Sumar1(const long long x, cons
     L[0] = 0.0L;
     long double s = 0.0L;
     int i = 0;
-    for (int n = 1; i <= x; i++) {
-        if (i == (int)P.size()) {
-            break;
-        }
+    for (int n = 1; n <= x; n++) {
         L[n] = L[n - 1];
-        if (P[i] == n) {
+        if (i < (int)P.size() && P[i] == n) {
             const long double log = std::logl(n);
             L[n] += log;
             s += log * log;
