@@ -33,6 +33,11 @@ para todo \(x \geq n_0\).
 Convenientemente hemos definido \(K\)
 para poder estimar asint\'oticamente la identidad de Selberg.
 
+Ahora presentaremos como computar \(K\).
+
+Primero precomputaremos los n\'umeros primos en el rango de inter\'es
+para poder utilizarlos en ambas sumatorias.
+
 \begin{algorithm}[H]
     \SetAlgoLined
     \DontPrintSemicolon
@@ -56,6 +61,83 @@ para poder estimar asint\'oticamente la identidad de Selberg.
     }
     \caption{Retorna un arreglo din\'amico con todos los n\'umeros primos menores o iguales a \(x\).}
 \end{algorithm}
+
+\begin{lemma}
+    \label{lem:sieve-correctness}
+    El algoritmo \texttt{ObtenerPrimos}
+    computa correctamente los n\'umeros primos
+    menores o iguales a \(x\).
+\end{lemma}
+
+\begin{proof}
+    Definamos el arreglo est\'atico
+    \(M\brackets{0 \dots x}\) en la l\'inea \(2\)
+    donde \(M[i]\) denota si \(i\) es un n\'umero primo
+    y el arreglo din\'amico \(P\) en la l\'inea \(5\)
+    el cual contendr\'a todos los n\'umeros primos buscados.
+    La l\'inea \(4\) inicializa \(M[0]\) y \(M[1]\) en \textsc{Falso}
+    y el resto es inicializado como \textsc{Verdadero} en la l\'inea \(3\).
+    Sea \(n\) el n\'umero que estamos analizando en las l\'ineas \(6-16\).
+    Supongamos que \(n\) es un n\'umero primo.
+    Luego, las l\'ineas \(7-9\) siempre insertar\'an
+    a \(n\) en \(P\) puesto que la \'unica manera que \(M[n]\) sea \textsc{Falso}
+    es que alg\'un primo \(p \in P\) lo haya etiquetado de esta manera
+    en la l\'inea \(11\), lo cual es imposible pues \(n < pn\).
+    Por el teorema fundamental de la aritm\'etica
+    podemos expresar de manera \'unica
+    cualquier n\'umero natural mayor que \(1\) como
+    producto de potencias de n\'umeros primos.
+    Sin p\'erdida de generalidad, expresemos
+    \(n = p_1^{\alpha_1} \dots p_k^{\alpha_k}\)
+    con los factores primos \(p_1 \leq \dots \leq p_k\) ordenados crecientemente.
+    Ahora supongamos que \(n\) es compuesto y escribamos
+    \(n = p_1 m\) con \(m = p_1^{\alpha_1 - 1} \dots p_k^{\alpha_k}\).
+    Afirmamos que \(M[n]\) es \textsc{Falso} al llegar a la l\'inea \(7\)
+    y, por ende, no es insertado en \(P\).
+    Necesariamente \(1 < m < n\) pues \(n\) es compuesto.
+    Como \(p_1\) es menor o igual que
+    todos los primos que dividen a \(m\),
+    la l\'inea \(11\) asigna a \(M[m p_1]\)
+    el valor \textsc{Falso}
+    cuando el bucle de las l\'ineas \(6-16\)
+    est\'a analizando a \(m\).
+\end{proof}
+
+\begin{lemma}
+    \label{lem:sieve-time}
+    El tiempo de ejecuci\'on del algoritmo \texttt{ObtenerPrimos}
+    para computar los n\'umeros primos menores o iguales a \(x\) es \(O(x)\).
+\end{lemma}
+
+\begin{proof}
+    En la prueba del \cref{lem:sieve-correctness} observamos que
+    cada n\'umero compuesto es etiquetado como \textsc{Falso}
+    una \'unica vez puesto que determin\'isticamente sabemos qu\'e primo
+    y qu\'e n\'umero su producto hizo que cambie el valor de \(M\) en dicho compuesto.
+    En la l\'inea \(12\) nos aseguramos de que los m\'ultiplos a analizar
+    sean originados por el menor primo que divide a este n\'umero compuesto,
+    pues ni bien deje de serlo,
+    la l\'inea \(13\) evita
+    que sigamos analizando m\'as m\'ultiplos innecesariamente.
+\end{proof}
+
+\begin{theorem}
+    \label{thm:sieve}
+    Sea \(x\) un n\'umero entero positivo.
+    El algoritmo \texttt{ObtenerPrimos}
+    computa correctamente los n\'umeros primos
+    menores o iguales a \(x\) en tiempo y espacio \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    Inmediato del \cref{lem:sieve-correctness} y el \cref{lem:sieve-time}.
+\end{proof}
+
+Vamos preparando el clima para computar \(\sum_{pq \leq x} \ln p \ln q\).
+Si fijamos \(p\) y conocemos todos los primos menores o iguales a \(x\),
+me gustar\'ia saber qu\'e primos \(q\) mayores o iguales a \(p\) aportan a esta sumatoria.
+El siguiente algoritmo nos permitir\'a obtener la menor cota superior
+para este subconjunto.
 
 \begin{algorithm}[H]
     \SetAlgoLined
@@ -83,6 +165,46 @@ para poder estimar asint\'oticamente la identidad de Selberg.
     \caption{Retorna el m\'aximo primo \(q\) mayor o igual a \(p\) tal que \(pq \leq x\).}
 \end{algorithm}
 
+\begin{theorem}
+    \label{thm:binary-search}
+    Sea \(x\) un n\'umero entero positivo,
+    \(p\) un n\'umero primo menor o igual a \(x\) y
+    \(P\) un arreglo din\'amico con los n\'umeros primos menores o iguales a \(x\) ordenados crecientemente.
+    El algoritmo \texttt{ObtenerM\'aximoPrimo}
+    obtiene el m\'aximo primo \(q\)
+    mayor o igual a \(p\) tal que
+    \(pq \leq x\)
+    o \(-1\) en caso no exista
+    en tiempo \(O(\log_2 \pi(x))\).
+\end{theorem}
+
+\begin{proof}
+    Una precondici\'on para la l\'inea \(4\) es que
+    \(P[l]\) y \(P[r]\) son el menor y mayor n\'umero primo
+    menores o iguales a \(x\), respectivamente.
+    En las l\'ineas \(4-6\), si \(p\) multiplicado por el mayor n\'umero primo menor o igual a \(x\)
+    sigue siendo menor o igual a \(x\), este ser\'ia el primo buscado.
+    Por otro lado, si \(p^2 > x\) tenemos que \(pq \geq p^2 > x\) para \(q \geq p\)
+    por lo que no existir\'ia soluci\'on.
+    As\'i, las l\'ineas \(7-9\) se aseguran de retornar \(-1\) frente a esta situaci\'on.
+    Caso contrario, notamos que si \(p \cdot P[i] \leq x\)
+    entonces \(p \cdot P[i - 1] \leq x\) para \(i > 0\).
+    Luego construimos la invariante \(p \cdot P[l] \leq x\) y \(p \cdot P[r] > x\)
+    y la preservamos a lo largo del bucle de las l\'ineas \(10-17\),
+    el cual se detiene cuando \(l\) y \(r\) son consecutivos.
+    Como \(P\) tiene \(\pi(x)\) elementos y en cada paso
+    reducimos el espacio de b\'usqueda de \(r - l + 1\) elementos
+    a \(\floor{(r - l + 1) / 2} + O(1)\) elementos,
+    la complejidad en tiempo ser\'a \(O(\log_2 \pi(x))\).
+\end{proof}
+
+Supongamos que tenemos un arreglo \(L[0 \dots x]\) donde
+\(L[n] = \sum_{p \leq n} \ln p\).
+Luego podemos calcular \(\sum_{l \leq p \leq r} \ln p = L[r] - L[l - 1]\) para \(l \geq 1\)
+en \(O(1)\).
+La meta del siguiente algoritmo es computar \(L[0 \dots x]\)
+y de pasada a \(\sum_{p \leq x} \ln^2 p\).
+
 \begin{algorithm}[H]
     \SetAlgoLined
     \DontPrintSemicolon
@@ -92,11 +214,8 @@ para poder estimar asint\'oticamente la identidad de Selberg.
         \(s = 0\)\;
         \(i = 0\)\;
         \For {\(n = 1\) \KwTo \(x\)} {
-            \If {\(i == P.\,length\)} {
-                \textbf{break}\;
-            }
             \(L\brackets{n} = L\brackets{n - 1}\)\;
-            \If {\(P\brackets{i} == n\)} {
+            \If {\(i < P.\,length\) and \(P\brackets{i} == n\)} {
                 \(L\brackets{n} = L\brackets{n} + \ln n\)\;
                 \(s = s + \ln^2 n\)\;
                 \(i = i + 1\)\;
@@ -107,22 +226,76 @@ para poder estimar asint\'oticamente la identidad de Selberg.
     \caption{Retorna \(\sum_{p \leq x} \ln^2 p\) y las sumas parciales de \(\sum_{p \leq x} \ln p\).}
 \end{algorithm}
 
+\begin{theorem}
+    \label{thm:sum-1}
+    Sea \(x\) un n\'umero entero positivo y
+    \(P\) un arreglo din\'amico con los n\'umeros primos menores o iguales a \(x\) ordenados crecientemente.
+    El algoritmo \texttt{Sumar\textsubscript{1}} computa \(\sum_{p \leq x} \ln^2 p\) y \(L[0 \dots x]\)
+    en tiempo \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    Trivialmente el tiempo de ejecuci\'on del algoritmo es \(O(x)\) pues
+    cada iteraci\'on del bucle en las l\'ineas \(6-13\) toma \(O(1)\).
+    Adem\'as, es t\'acito que el aporte de \(\ln^2 n\) a \(s\) y de \(\ln n\) a \(L[n]\)
+    se da cuando \(n\) es primo.
+\end{proof}
+
+Ya hemos preparado el clima
+y dispuesto los tecnicismos necesarios para
+computar el plato de fondo.
+Sea \(x\) un n\'umero entero positivo, expresamos
+\[
+    \sum_{pq \leq x} \ln p \ln q
+    = \sum_{p \leq x} \sum_{p \leq q \leq r} \ln p \ln q
+    = \sum_{p \leq x} \ln p \sum_{p \leq q \leq r} \ln q
+    = \sum_{p \leq x} \ln p \cdot \parentheses{L[r] - L[p - 1]}
+\]
+donde \(r\) es el m\'aximo primo mayor o igual a \(p\) tal que \(pr \leq x\).
+
 \begin{algorithm}[H]
     \SetAlgoLined
     \DontPrintSemicolon
     \Fn{\SumarDos{\(x, L, P\)}} {
         \(s = 0\)\;
         \For {\(p \in P\)} {
-            \(q =\,\)\texttt{ObtenerM\'aximoPrimo}\(\parentheses{p, x, P}\)\;
-            \If {\(q == -1\)} {
+            \(r =\,\)\texttt{ObtenerM\'aximoPrimo}\(\parentheses{p, x, P}\)\;
+            \If {\(r == -1\)} {
                 \textbf{break}\;
             }
-            \(s = s + \ln p \cdot \parentheses{L\brackets{q} - L\brackets{p - 1}}\)\;
+            \(s = s + \ln p \cdot \parentheses{L\brackets{r} - L\brackets{p - 1}}\)\;
         }
         \KwRet{\(s\)}
     }
     \caption{Retorna \(\sum_{pq \leq x} \ln p \ln q\).}
 \end{algorithm}
+
+\begin{theorem}
+    \label{thm:sum-2}
+    Sea \(x\) un n\'umero entero positivo,
+    \(P\) un arreglo din\'amico con los n\'umeros primos menores o iguales a \(x\) ordenados crecientemente y
+    \(L[0 \dots x]\) un arreglo en donde \(L[n] = \sum_{p \leq n} \ln p\).
+    El algoritmo \texttt{Sumar}\textsubscript{2} computa \(\sum_{pq \leq x} \ln p \ln q\) en \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    El bucle de las l\'ineas \(3-9\) realizar\'a a lo m\'as \(\pi(x)\) iteraciones.
+    En cada iteraci\'on, la l\'inea \(4\) toma \(O(\log_2\pi(x))\) en tiempo
+    y el resto de l\'ineas toma \(O(1)\) por lo que el tiempo de ejecuci\'on ser\'ia
+    \(O\parentheses{\pi(x) \log_2\pi(x)}\).
+    Rosser y Schoenfeld \cite[corolario 1]{Rosser1962} probaron que
+    \(\pi(x) < cx / \ln x\) para \(x > 1\) y \(c = 1.25506\).
+    Tras un mero manejo simb\'olico
+    \begin{align*}
+        \pi(x) \log_2 \pi(x) &\leq \frac{cx}{\ln x} \log_2 \frac{cx}{\ln x} \\
+        &= \frac{cx}{\ln x} \parentheses{\log_2 c + \log_2 x - \log_2 \ln x} \\
+        &= \parentheses{c \log_2 c}\frac{x}{\ln x} + \parentheses{c \log_2 e}x - c\parentheses{\frac{x \log_2 \ln x}{\ln x}} \\
+        &= O(x)
+    \end{align*}
+    nuestra labor es recompensada inmediatamente.
+\end{proof}
+
+El siguiente algoritmo en cierto sentido resume nuestro trabajo hasta el momento.
 
 \begin{algorithm}[H]
     \SetAlgoLined
@@ -133,21 +306,30 @@ para poder estimar asint\'oticamente la identidad de Selberg.
         \(t = \,\)\texttt{Sumar}\(_2(x, L, P)\)\;
         \KwRet{\(\abs{s + t - 2 x \ln x}/x\)}
     }
-    \caption{Computa \(K(x)\)}
+    \caption{Computa \(K(x)\).}
 \end{algorithm}
+
+\begin{theorem}
+    Sea \(x\) un n\'umero entero positivo.
+    El algoritmo \texttt{K} computa \(K(x)\) en \(O(x)\).
+\end{theorem}
+
+\begin{proof}
+    Esto es fruto de el \cref{thm:sieve}, el \cref{thm:sum-1} y el \cref{thm:sum-2}.
+\end{proof}
 
 \section{Estimados}
 
 Realizamos nuestros experimentos en una
 MacBook Pro \(15-\)inch \(2017\)
-corriendo Ventura \(13.4\)
+corriendo macOS Ventura \(13.4\)
 con \(16\)GB de RAM y
 un CPU Quad-Core Intel Core i7
 con m\'axima frecuencia de reloj de \(2.9\)GHz.
 El procesador contiene \(4\) n\'ucleos
 y cada n\'ucleo puede aprovechar \(2\) hilos
 con hyper-threading technology habilitada.
-Usamos el lenguaje de programaci\'on C++ para implementar los algoritmos,
+Usamos el lenguaje de programaci\'on C++ para implementar nuestros algoritmos,
 utilizando el est\'andar C++17.
 Los n\'umeros de \(64\) bits fueron emulados usando los tipos de datos
 \texttt{long long} y \texttt{long double} del compilador
@@ -160,14 +342,18 @@ Apple clang version 14.0.3 (clang-1403.0.22.14.1).
       \toprule
       \textbf{\(x\)} & \textbf{\(K(x)\)} & \textbf{Tiempo de computaci\'on (ms)} \\
       \midrule
-      \(10^1\) & 4.6051701860 & 0 \\
-      \(10^2\) & 9.2103403720 & 0 \\
-      \(10^3\) & 13.8155105580 & 0 \\
-      \(10^4\) & 18.4206807440 & 1 \\
-      \(10^5\) & 23.0258509299 & 16 \\
-      \(10^6\) & 27.6310211159 & 132 \\
-      \(10^7\) & 32.2361913019 & 1333 \\
-      \(10^8\) & 36.8413614879 & 14913 \\
+      \(10^1\) & 3.4422963847 & 0 \\
+      \(10^2\) & 5.1926865457 & 0 \\
+      \(10^3\) & 6.3173110617 & 0 \\
+      \(10^4\) & 7.4463872101 & 2 \\
+      \(10^5\) & 8.5931825594 & 18 \\
+      \(10^6\) & 9.7471335703 & 156 \\
+      \(10^7\) & 10.8942869828 & 1406 \\
+      \(10^8\) & 12.0436377380 & 16150 \\
+      \(10^9\) & 13.1943961187 & 201913 \\
       \bottomrule
     \end{tabular}
 \end{table}
+
+El c\'odigo fuente para replicar los resultados est\'a disponible en GitHub en
+\goto{https://github.com/ManuelLoaizaVasquez/selberg-identity/tree/main/code/}.
