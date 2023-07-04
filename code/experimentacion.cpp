@@ -62,11 +62,11 @@ std::tuple<long double, std::vector<long double>> Sumar1(const long long x, cons
 long double Sumar2(const long long x, const std::vector<long double>& L, const std::vector<long long>& P) {
     long double s = 0.0L;
     for (long long p: P) {
-        long long q = ObtenerMaximoPrimo(p, x, P);
-        if (q == -1) {
+        long long r = ObtenerMaximoPrimo(p, x, P);
+        if (r == -1) {
             break;
         }
-        s += std::logl(p) * (L[q] - L[p - 1]);
+        s += std::logl(p) * (L[r] - L[p - 1]);
     }
     return s;
 }

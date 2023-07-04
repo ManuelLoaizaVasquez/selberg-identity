@@ -184,7 +184,7 @@ para este subconjunto.
     menores o iguales a \(x\), respectivamente.
     En las l\'ineas \(4-6\), si \(p\) multiplicado por el mayor n\'umero primo menor o igual a \(x\)
     sigue siendo menor o igual a \(x\), este ser\'ia el primo buscado.
-    Por otro lado, si \(p^2 > x\) tenemos que \(pq \geq p^2 > x\) para \(q \geq p\)
+    Por otro lado, si \(p^2 > x\) tenemos \(pq \geq p^2 > x\) para \(q \geq p\)
     por lo que no existir\'ia soluci\'on.
     As\'i, las l\'ineas \(7-9\) se aseguran de retornar \(-1\) frente a esta situaci\'on.
     Caso contrario, notamos que si \(p \cdot P[i] \leq x\)
@@ -283,14 +283,14 @@ donde \(r\) es el m\'aximo primo mayor o igual a \(p\) tal que \(pr \leq x\).
     En cada iteraci\'on, la l\'inea \(4\) toma \(O(\log_2\pi(x))\) en tiempo
     y el resto de l\'ineas toma \(O(1)\) por lo que el tiempo de ejecuci\'on ser\'ia
     \(O\parentheses{\pi(x) \log_2\pi(x)}\).
-    Rosser y Schoenfeld \cite[corolario 1]{Rosser1962} probaron que
+    Rosser y Schoenfeld \cite[corolario 1]{Rosser1962} probaron que se cumple
     \(\pi(x) < cx / \ln x\) para \(x > 1\) y \(c = 1.25506\).
     Tras un mero manejo simb\'olico
     \begin{align*}
         \pi(x) \log_2 \pi(x) &\leq \frac{cx}{\ln x} \log_2 \frac{cx}{\ln x} \\
         &= \frac{cx}{\ln x} \parentheses{\log_2 c + \log_2 x - \log_2 \ln x} \\
         &= \parentheses{c \log_2 c}\frac{x}{\ln x} + \parentheses{c \log_2 e}x - c\parentheses{\frac{x \log_2 \ln x}{\ln x}} \\
-        &= O(x)
+        &= O(x),
     \end{align*}
     nuestra labor es recompensada inmediatamente.
 \end{proof}

@@ -8,7 +8,8 @@
 {La identidad de Selberg}
 \label{ch:selberg}
 
-El objetivo de este cap\'itulo es demostrar \cite[ecuaci\'on 2.8]{Selberg1949}.
+El objetivo de este cap\'itulo es demostrar
+la identidad de Selberg \cite[ecuaci\'on 2.8]{Selberg1949}.
 La prueba cl\'asica de Selberg depende de la funci\'on
 n\'umero de divisores de \(n\) denotada por \(\tau(n)\)
 y la funci\'on \(\theta_n(x)\) definida como \(\sum_{d \, \mid \, n} \mu(d) \ln^2(x / d)\).
@@ -21,7 +22,7 @@ desarrollados en \cite[teorema 4.1]{Choudhary2017}.
 En contraste, nuestras pruebas son trasparentes en uso
 de aquellos teoremas tauberianos y ser\'an fruto de
 resultados cl\'asicos de \cite{Apostol1976}
-junto con brillantes ideas de art\'iculos que gravitan en torno al tema.
+junto con otras ideas de art\'iculos que gravitan en torno al tema.
 
 \begin{lemma}
   \label{lem:harmonic}
@@ -160,7 +161,7 @@ junto con brillantes ideas de art\'iculos que gravitan en torno al tema.
   \(
     \floor{x} = n = x - r = x + O(1)
   \)
-  concluyendo trivialmente con la propiedad.
+  y se concluye trivialmente con la propiedad.
 \end{proof}
 
 \begin{lemma}
@@ -295,7 +296,7 @@ junto con brillantes ideas de art\'iculos que gravitan en torno al tema.
 \end{lemma}
 
 \begin{proof}
-  Como sabemos que para todo \(x \geq 1\) se cumple que \(x > \ln x\)
+  Como sabemos que para todo \(x \geq 1\) se cumple \(x > \ln x\)
   (v\'ia an\'alisis de la  derivada de \(x - \ln x\)), se obtiene
   \[
     \ln^2 x
@@ -412,14 +413,14 @@ junto con brillantes ideas de art\'iculos que gravitan en torno al tema.
     \Psi(x)\ln x
     + \sum_{n \leq x} \Psi\parentheses{\frac{x}{n}}\Lambda(n)
     - x \ln x - x \sum_{n \leq x} \frac{\Lambda(n)}{n}
-    + (\gamma + 1)\Psi(x).\eqlabel{eq:reordered-right-expression}
+    + (\gamma + 1)\Psi(x) + \parentheses{\gamma + 1} x.\eqlabel{eq:reordered-right-expression}
   \]
   Merced al \cref{lem:psi-is-ox} y el \cref{lem:mangoldt-n-lnx-o1}
   reducimos \eqref{eq:reordered-right-expression} a
   \begin{align*}
     \Psi(x)\ln x +
     \sum_{n \leq x} \Psi\parentheses{\frac{x}{n}}\Lambda(n)
-    - x \ln x - x(\ln x + O(1)) + O(x) \\
+    - x \ln x - x(\ln x + O(1)) + O(x) + \parentheses{\gamma + 1} x \\
     = \Psi(x)\ln x +
     \sum_{n \leq x} \Psi\parentheses{\frac{x}{n}}\Lambda(n) - 2x \ln x + O(x).
     \eqlabel{eq:right-expression}
@@ -436,7 +437,7 @@ junto con brillantes ideas de art\'iculos que gravitan en torno al tema.
 
 
 La prueba del lema siguiente es remedo del argumento utilizado en
-\cite[lema 4]{Levinson1969} para liquidar
+\cite[lema 4]{Levinson1969} para conseguir
 \[
   \Psi(x) = \pi(x) \ln x + O \parentheses{\frac{x \ln \ln x}{\ln x}}.
 \]
@@ -467,7 +468,7 @@ La prueba del lema siguiente es remedo del argumento utilizado en
   \(2 \ln x > m\).
   Notamos que para valores mayores que
   \(m = \floor{2 \ln x}\) los constituyentes de la suma son nulos.
-  Ahora podemos reescribir a \(\Psi\) como 
+  Ahora podemos reescribir \(\Psi\) como 
   \[
     \Psi(x) = \vartheta(x) + \vartheta(x^{1/2}) + \cdots + \vartheta(x^{1/m})
     = \vartheta(x) + \sum_{n = 2}^m \vartheta(x^{1/n}).
@@ -496,7 +497,7 @@ La prueba del lema siguiente es remedo del argumento utilizado en
     = \sum_{p \leq \sqrt{x}} \ln x
     = \ln x \sum_{p \leq \sqrt{x}} 1
     \leq \ln x \sum_{n \leq \sqrt{x}} 1
-    \leq \ln x \sqrt{x}, 
+    \leq \sqrt{x} \ln x,
   \end{align*}
   lo que permite concluir \(\sum_{n = 2}^m \vartheta(x^{1/n}) = O(\sqrt{x} \ln x)\).
   Con lo anterior queda establecida la relaci\'on \(\Psi(x) = \vartheta(x) + O(\sqrt{x} \ln x)\).
@@ -602,13 +603,13 @@ La prueba del lema siguiente es remedo del argumento utilizado en
   con al menos uno de los exponentes mayor o igual a dos.
   De este modo, se consigue
   \begin{align*}
-    \sum_{nm \leq x} \Lambda(n) \Lambda(m)
+    0 \leq \sum_{nm \leq x} \Lambda(n) \Lambda(m)
     - \sum_{pq \leq x} \ln p \ln q
     \leq \sum_{\substack{p^n q^m \leq x \\ n \geq 2 \\ m \geq 1}} \ln p \ln q
     + \sum_{\substack{p^n q^m \leq x \\ n \geq 1 \\ m \geq 2}} \ln p \ln q \\
     = 2 \sum_{\substack{p^n q^m \leq x \\ n \geq 2 \\ m \geq 1}} \ln p \ln q
     = 2 \sum_{\substack{p^n \leq x \\ n \geq 2}} \ln p \sum_{\substack{q^m \leq x / p^n \\ m \geq 1}} \ln q
-    = O\parentheses{\sum_{\substack{p^n \leq x \\ n \geq 2}} \ln p \, \Psi\parentheses{\frac{x}{p}}},
+    = O\parentheses{\sum_{\substack{p^n \leq x \\ n \geq 2}} \ln p \, \Psi\parentheses{\frac{x}{p^n}}},
   \end{align*}
   puesto que tras la desigualdad contamos por partida doble
   aquellos pares cuyos productos no son enteros libres de cuadrados.
@@ -720,7 +721,7 @@ Finalmente el resultado te\'orico m\'as importante de este cap\'itulo.
     &= \sum_{p \leq x} \ln p \ln \parentheses{\frac{x}{p}}.\eqlabel{eq:lnp-lnxp}
   \end{align*}
   
-  A continuaci\'on recurrimos a una versi\'on gruesa del \cref{lem:harmonic};
+  A continuaci\'on recurrimos a una versi\'on gruesa del \cref{lem:harmonic}:
   al ser \(1/x\) acotado para \(x \ge 0\), obtenemos  para la serie arm\'onica
   \[
     \sum_{n \leq x} \frac{1}{n}
