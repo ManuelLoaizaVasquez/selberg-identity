@@ -1,0 +1,78 @@
+% https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+
+% Define custom colors
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{pucp}{rgb}{0, 0.125, 0.376}
+
+% Define custom colors for C++ code
+\definecolor{cppcodebg}{rgb}{0.95,0.95,0.95}
+\definecolor{cppcodekeyword}{rgb}{0.5,0,0.33}
+\definecolor{cppcodecomment}{rgb}{0,0.6,0}
+\definecolor{cppcodestring}{rgb}{0,0,1}
+
+% Define custom style for C++ code
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  backgroundcolor=\color{cppcodebg},
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{cppcodekeyword},
+  commentstyle=\color{cppcodecomment},
+  stringstyle=\color{cppcodestring},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  showstringspaces=false,
+  tabsize=2,
+  breaklines=true,
+  breakatwhitespace=false,
+  frame=single,
+  framesep=8pt,
+  xleftmargin=8pt,
+  xrightmargin=8pt,
+  framexleftmargin=8pt,
+  framexrightmargin=8pt,
+  framextopmargin=6pt,
+  framexbottommargin=6pt,
+  captionpos=b,
+  linewidth=0.95\linewidth,
+  belowcaptionskip=6pt
+}
+
+% Define custom colors for Makefile
+\definecolor{makefilecodebg}{rgb}{0.95,0.95,0.95}
+\definecolor{makefilecodekeyword}{rgb}{0.2,0.4,0.8}
+\definecolor{makefilecodecomment}{rgb}{0,0.6,0}
+\definecolor{makefilecodestring}{rgb}{0.4,0.4,0.4}
+\definecolor{makefilecodedollar}{rgb}{0.8,0.2,0}
+\definecolor{makefilecodeparen}{rgb}{0.2,0.4,0.8}
+
+% Define custom style for Makefile
+\lstdefinestyle{makefilestyle}{
+  language=make,
+  backgroundcolor=\color{makefilecodebg},
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{makefilecodekeyword},
+  commentstyle=\color{cppcodecomment},
+  stringstyle=\color{makefilecodestring},
+  literate=*{\$}{{\textcolor{makefilecodedollar}{\$}}}1 {(}{{\textcolor{makefilecodeparen}{(}}}1 {)}{{\textcolor{makefilecodeparen}{)}}}1,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  showstringspaces=false,
+  tabsize=2,
+  breaklines=true,
+  breakatwhitespace=false,
+  frame=single,
+  framesep=8pt,
+  xleftmargin=8pt,
+  xrightmargin=8pt,
+  framexleftmargin=8pt,
+  framexrightmargin=8pt,
+  framextopmargin=6pt,
+  framexbottommargin=6pt,
+  captionpos=b,
+  linewidth=0.95\linewidth,
+  belowcaptionskip=6pt
+}
