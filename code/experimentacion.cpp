@@ -22,7 +22,11 @@ std::vector<long long> ObtenerPrimos(const long long x) {
     return P;
 }
 
-long long ObtenerMaximoPrimo(const long long p, const long long x, const std::vector<long long>& P) {
+long long ObtenerMaximoPrimo(
+    const long long p,
+    const long long x,
+    const std::vector<long long>& P
+) {
     int l = 0;
     int r = (int)P.size() - 1;
     if (p * P[r - 1] <= x) {
@@ -42,7 +46,10 @@ long long ObtenerMaximoPrimo(const long long p, const long long x, const std::ve
     return P[l];
 }
 
-std::tuple<long double, std::vector<long double>> Sumar1(const long long x, const std::vector<long long>& P) {
+std::tuple<long double, std::vector<long double>> Sumar1(
+    const long long x,
+    const std::vector<long long>& P
+) {
     std::vector<long double> L(x + 1);
     L[0] = 0.0L;
     long double s = 0.0L;
@@ -59,7 +66,11 @@ std::tuple<long double, std::vector<long double>> Sumar1(const long long x, cons
     return std::make_tuple(s, L);
 }
 
-long double Sumar2(const long long x, const std::vector<long double>& L, const std::vector<long long>& P) {
+long double Sumar2(
+    const long long x,
+    const std::vector<long double>& L,
+    const std::vector<long long>& P
+) {
     long double s = 0.0L;
     for (long long p: P) {
         long long r = ObtenerMaximoPrimo(p, x, P);

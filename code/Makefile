@@ -1,13 +1,13 @@
 CXX = g++
 CXXFLAGS = -std=c++17
 
-# List of source files
+# Lista de archivos fuente
 SRCS = experimentacion.cpp main.cpp
 
-# Generate the object file names
+# Nombres de los archivos de objetos
 OBJS = $(SRCS:.cpp=.o)
 
-# Name of the executable
+# Nombre del ejecutable
 TARGET = main
 
 all: $(TARGET)
